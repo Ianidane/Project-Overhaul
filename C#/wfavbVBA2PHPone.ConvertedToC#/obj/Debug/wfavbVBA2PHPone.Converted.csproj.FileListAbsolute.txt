@@ -1,0 +1,12 @@
+C:\Users\Ian\Documents\Visual Studio 2012\Projects\wfavbVBA2PHPone.ConvertedToC#\bin\Debug\wfavbVBA2PHPone.exe.config
+C:\Users\Ian\Documents\Visual Studio 2012\Projects\wfavbVBA2PHPone.ConvertedToC#\obj\Debug\Interop.Scripting.dll
+C:\Users\Ian\Documents\Visual Studio 2012\Projects\wfavbVBA2PHPone.ConvertedToC#\obj\Debug\wfavbVBA2PHPone.Converted.csproj.ResolveComReference.cache
+C:\Users\Ian\Documents\Visual Studio 2012\Projects\wfavbVBA2PHPone.ConvertedToC#\obj\Debug\wfavbVBA2PHPone.Form1.resources
+C:\Users\Ian\Documents\Visual Studio 2012\Projects\wfavbVBA2PHPone.ConvertedToC#\obj\Debug\wfavbVBA2PHPone.My_Project.Resources.resources
+C:\Users\Ian\Documents\Visual Studio 2012\Projects\wfavbVBA2PHPone.ConvertedToC#\obj\Debug\wfavbVBA2PHPone.Converted.csproj.GenerateResource.Cache
+C:\Users\Ian\Documents\Visual Studio 2012\Projects\wfavbVBA2PHPone.ConvertedToC#\obj\Debug\wfavbVBA2PHPone.Converted.csprojResolveAssemblyReference.cache
+C:\Users\Ian\Documents\Visual Studio 2012\Projects\wfavbVBA2PHPone.ConvertedToC#\bin\Debug\wfavbVBA2PHPone.exe
+C:\Users\Ian\Documents\Visual Studio 2012\Projects\wfavbVBA2PHPone.ConvertedToC#\bin\Debug\wfavbVBA2PHPone.pdb
+C:\Users\Ian\Documents\Visual Studio 2012\Projects\wfavbVBA2PHPone.ConvertedToC#\bin\Debug\wfavbVBA2PHPone.xml
+C:\Users\Ian\Documents\Visual Studio 2012\Projects\wfavbVBA2PHPone.ConvertedToC#\obj\Debug\wfavbVBA2PHPone.exe
+C:\Users\Ian\Documents\Visual Studio 2012\Projects\wfavbVBA2PHPone.ConvertedToC#\obj\Debug\wfavbVBA2PHPone.pdb
