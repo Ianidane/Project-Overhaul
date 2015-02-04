@@ -4,6 +4,23 @@
         <name>wfavbVBA2PHPone</name>
     </assembly>
     <members>
+        <member name="F:wfavbVBA2PHPone.Form1.components">
+            <summary>
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:wfavbVBA2PHPone.Form1.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:wfavbVBA2PHPone.Form1.InitializeComponent">
+            <summary>
+            Required method for Designer support - do not modify
+            the contents of this method with the code editor.
+            </summary>
+        </member>
         <member name="T:wfavbVBA2PHPone.My.Resources.Resources">
             <summary>
               A strongly-typed resource class, for looking up localized strings, etc.

@@ -1,20 +1,18 @@
-using Microsoft.VisualBasic;
-using System;
-using System.Collections;
+﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data;
 using System.Drawing;
-using System.Diagnostics;
-using System.Windows.Forms;
 using System.Linq;
-using System.Xml.Linq;
+using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
+
 namespace wfavbVBA2PHPone
 {
-	public partial class Form1
-	{
-		//there are a bunch of line numbers in these functions - these are just hold overs from the VB6 program
-        private void Button1_Click(object sender, EventArgs e)
+    public partial class Form1 : Form
+    {
+        private void button1_Click(object sender, EventArgs e)
         {
             List<PageInfo> slstAllPages = new List<PageInfo>();
             List<string> slstAllPageNames = new List<string>();
@@ -46,16 +44,16 @@ namespace wfavbVBA2PHPone
 
                 slstUnprocessPageNames.Remove(slstUnprocessPageNames[0]);
 
-                Interaction.MsgBox("done");
+//150203                Interaction.MsgBox("done");
+                MessageBox.Show("done");
             }
         }
-		public Form1()
-		{
-			InitializeComponent();
-		}
-
+        public Form1()
+        {
+            InitializeComponent();
+        }
 
         public string sstrPagesOpenForm { get; set; }
+
     }
 }
-
