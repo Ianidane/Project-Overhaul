@@ -27,3 +27,10 @@ C:\Users\Ian\Documents\GitHub\Project-Overhaul\C#\wfavbVBA2PHPone.ConvertedToC#\
 C:\Users\Ian\Documents\GitHub\Project-Overhaul\C#\wfavbVBA2PHPone.ConvertedToC#\obj\Debug\wfavbVBA2PHPone.Converted.csproj.ResolveComReference.cache
 C:\Users\Ian\Documents\GitHub\Project-Overhaul\C#\wfavbVBA2PHPone.ConvertedToC#\obj\Debug\wfavbVBA2PHPone.exe
 C:\Users\Ian\Documents\GitHub\Project-Overhaul\C#\wfavbVBA2PHPone.ConvertedToC#\obj\Debug\wfavbVBA2PHPone.pdb
+C:\Users\Ian\Documents\GitHub\Project-Overhaul\C#\wfavbVBA2PHPone.ConvertedToC#\bin\Debug\wfavbVBA2PHPone.exe
+C:\Users\Ian\Documents\GitHub\Project-Overhaul\C#\wfavbVBA2PHPone.ConvertedToC#\bin\Debug\wfavbVBA2PHPone.pdb
+C:\Users\Ian\Documents\GitHub\Project-Overhaul\C#\wfavbVBA2PHPone.ConvertedToC#\bin\Debug\wfavbVBA2PHPone.xml
+C:\Users\Ian\Documents\GitHub\Project-Overhaul\C#\wfavbVBA2PHPone.ConvertedToC#\obj\Debug\wfavbVBA2PHPone.Converted.csprojResolveAssemblyReference.cache
+C:\Users\Ian\Documents\GitHub\Project-Overhaul\C#\wfavbVBA2PHPone.ConvertedToC#\obj\Debug\wfavbVBA2PHPone.Form1.resources
+C:\Users\Ian\Documents\GitHub\Project-Overhaul\C#\wfavbVBA2PHPone.ConvertedToC#\obj\Debug\wfavbVBA2PHPone.My_Project.Resources.resources
+C:\Users\Ian\Documents\GitHub\Project-Overhaul\C#\wfavbVBA2PHPone.ConvertedToC#\obj\Debug\wfavbVBA2PHPone.Converted.csproj.GenerateResource.Cache
