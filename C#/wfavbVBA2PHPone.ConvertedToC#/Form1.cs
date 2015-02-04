@@ -20,10 +20,10 @@ namespace wfavbVBA2PHPone
             List<string> slstAllPageNames = new List<string>();
             List<string> slstUnprocessPageNames = new List<string>();
 
-            PageInfo sclsPageInfo = new PageInfo("C:\\Users\\Ian\\Documents\\VBA2PHP\\Form_refresh Links.txt");
+            PageInfo sclsPageInfo = new PageInfo("C:\\VBA2PHP\\Form_refresh Links.txt");
             bool sbolBackupExistingPHPPages = false;
             sbolBackupExistingPHPPages = false;
-            sclsPageInfo.WritePHPPage("C:\\Users\\Ian\\Documents\\ProIRB_PHP\\", sbolBackupExistingPHPPages);
+            sclsPageInfo.WritePHPPage("C:\\ProIRB_PHP\\", sbolBackupExistingPHPPages);
 
             slstAllPages.Add(sclsPageInfo);
             slstAllPageNames.Add(sclsPageInfo.Name);
@@ -41,8 +41,8 @@ namespace wfavbVBA2PHPone
             int slonTempPagesProcess = 0;
             while (slstUnprocessPageNames.Count > 0 & slonTempPagesProcess < 5)
             {
-                sclsPageInfo = new PageInfo("C:\\Users\\Ian\\Documents\\ProIRB_Text\\Form_" + slstUnprocessPageNames[0] + ".txt");
-                sclsPageInfo.WritePHPPage("C:\\Users\\Ian\\Documents\\ProIRB_PHP\\", sbolBackupExistingPHPPages);
+                sclsPageInfo = new PageInfo("C:\\ProIRB_Text\\Form_" + slstUnprocessPageNames[0] + ".txt");
+                sclsPageInfo.WritePHPPage("C:\\ProIRB_PHP\\", sbolBackupExistingPHPPages);
 
                 slstUnprocessPageNames.Remove(slstUnprocessPageNames[0]);
 
