@@ -50,7 +50,8 @@ namespace wfavbVBA2PHPone
 			sclsControlsInfo = new ControlsInfo();
 			ControlInfo sclsFormControl = null;
 			//first (top) control should be Begin Form
-			sclsFormControl = sclsControlsInfo.GetControlsInfo(sstrSource, ref sslonProcessLocation);
+//150203            sclsFormControl = sclsControlsInfo.GetControlsInfo(sstrSource, ref sslonProcessLocation);
+            sclsFormControl = sclsControlsInfo.GetControlsInfo(sstrSource, ref slonProcessLocation);//150203
 			//Ian - break here 
 			//inpect mlstAttributes and you can see attributes in a control
 			//if you inspect sclsFormControl you can keep drilling down into SubControls to see the whole control part of the file 

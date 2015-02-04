@@ -176,15 +176,15 @@ namespace wfavbVBA2PHPone
 			plonProcessLocation = plonProcessLocation + Strings.Len(Constants.vbCrLf);
 			//step over vbCrLf
 		}
-
-        public ControlInfo(string pstrSource, ref long plonProcessLocation, ref long slonNestDepth, ref Collection slstAllControls, Collection scolControlsByName)
-        {
-            // TODO: Complete member initialization
-            this.pstrSource = pstrSource;
-            this.plonProcessLocation = plonProcessLocation;
-            this.slonNestDepth = slonNestDepth;
-            this.slstAllControls = slstAllControls;
-            this.scolControlsByName = scolControlsByName;
-        }
+//150203
+//        public ControlInfo(string pstrSource, ref long plonProcessLocation, ref long slonNestDepth, ref Collection slstAllControls, Collection scolControlsByName)
+//        {
+//            // TODO: Complete member initialization
+//            this.pstrSource = pstrSource;
+//            this.plonProcessLocation = plonProcessLocation;
+//            this.slonNestDepth = slonNestDepth;
+//            this.slstAllControls = slstAllControls;
+//            this.scolControlsByName = scolControlsByName;
+//        }
 	}
 }

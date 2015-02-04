@@ -10,3 +10,15 @@ C:\Users\Ian\Documents\Visual Studio 2012\Projects\wfavbVBA2PHPone.ConvertedToC#
 C:\Users\Ian\Documents\Visual Studio 2012\Projects\wfavbVBA2PHPone.ConvertedToC#\bin\Debug\wfavbVBA2PHPone.xml
 C:\Users\Ian\Documents\Visual Studio 2012\Projects\wfavbVBA2PHPone.ConvertedToC#\obj\Debug\wfavbVBA2PHPone.exe
 C:\Users\Ian\Documents\Visual Studio 2012\Projects\wfavbVBA2PHPone.ConvertedToC#\obj\Debug\wfavbVBA2PHPone.pdb
+C:\Users\Dan\Documents\GitHub\Project-Overhaul\C#\wfavbVBA2PHPone.ConvertedToC#\bin\Debug\wfavbVBA2PHPone.exe.config
+C:\Users\Dan\Documents\GitHub\Project-Overhaul\C#\wfavbVBA2PHPone.ConvertedToC#\obj\Debug\Interop.Scripting.dll
+C:\Users\Dan\Documents\GitHub\Project-Overhaul\C#\wfavbVBA2PHPone.ConvertedToC#\obj\Debug\wfavbVBA2PHPone.Converted.csproj.ResolveComReference.cache
+C:\Users\Dan\Documents\GitHub\Project-Overhaul\C#\wfavbVBA2PHPone.ConvertedToC#\obj\Debug\wfavbVBA2PHPone.exe
+C:\Users\Dan\Documents\GitHub\Project-Overhaul\C#\wfavbVBA2PHPone.ConvertedToC#\obj\Debug\wfavbVBA2PHPone.pdb
+C:\Users\Dan\Documents\GitHub\Project-Overhaul\C#\wfavbVBA2PHPone.ConvertedToC#\obj\Debug\wfavbVBA2PHPone.Converted.csprojResolveAssemblyReference.cache
+C:\Users\Dan\Documents\GitHub\Project-Overhaul\C#\wfavbVBA2PHPone.ConvertedToC#\obj\Debug\wfavbVBA2PHPone.Form1.resources
+C:\Users\Dan\Documents\GitHub\Project-Overhaul\C#\wfavbVBA2PHPone.ConvertedToC#\obj\Debug\wfavbVBA2PHPone.My_Project.Resources.resources
+C:\Users\Dan\Documents\GitHub\Project-Overhaul\C#\wfavbVBA2PHPone.ConvertedToC#\obj\Debug\wfavbVBA2PHPone.Converted.csproj.GenerateResource.Cache
+C:\Users\Dan\Documents\GitHub\Project-Overhaul\C#\wfavbVBA2PHPone.ConvertedToC#\bin\Debug\wfavbVBA2PHPone.exe
+C:\Users\Dan\Documents\GitHub\Project-Overhaul\C#\wfavbVBA2PHPone.ConvertedToC#\bin\Debug\wfavbVBA2PHPone.pdb
+C:\Users\Dan\Documents\GitHub\Project-Overhaul\C#\wfavbVBA2PHPone.ConvertedToC#\bin\Debug\wfavbVBA2PHPone.xml
