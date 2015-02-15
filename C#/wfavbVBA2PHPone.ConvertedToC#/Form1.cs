@@ -18,10 +18,10 @@ namespace wfavbVBA2PHPone
             List<string> slstAllPageNames = new List<string>();
             List<string> slstUnprocessPageNames = new List<string>();
 
-            PageInfo sclsPageInfo = new PageInfo("C:\\VBA2PHP\\Form_refresh Links.txt");
+            PageInfo sclsPageInfo = new PageInfo("C:\\VBA2PHP\\ProIRB_Text\\Form_refresh Links.txt");
             bool sbolBackupExistingPHPPages = false;
             sbolBackupExistingPHPPages = false;
-            sclsPageInfo.WritePHPPage("C:\\ProIRB_PHP\\", sbolBackupExistingPHPPages);
+            sclsPageInfo.WritePHPPage("C:\\VBA2PHP\\ProIRB_PHP\\", sbolBackupExistingPHPPages);
 
             slstAllPages.Add(sclsPageInfo);
             slstAllPageNames.Add(sclsPageInfo.Name);
@@ -39,14 +39,25 @@ namespace wfavbVBA2PHPone
             int slonTempPagesProcess = 0;
             while (slstUnprocessPageNames.Count > 0 & slonTempPagesProcess < 5)
             {
-                sclsPageInfo = new PageInfo("C:\\ProIRB_Text\\Form_" + slstUnprocessPageNames[0] + ".txt");
-                sclsPageInfo.WritePHPPage("C:\\ProIRB_PHP\\", sbolBackupExistingPHPPages);
+                sclsPageInfo = new PageInfo("C:\\VBA2PHP\\ProIRB_Text\\Form_" + slstUnprocessPageNames[0] + ".txt");
+                sclsPageInfo.WritePHPPage("C:\\VBA2PHP\\ProIRB_PHP\\", sbolBackupExistingPHPPages);
 
                 slstUnprocessPageNames.Remove(slstUnprocessPageNames[0]);
 
-//150203                Interaction.MsgBox("done");
-                MessageBox.Show("done");
+                //150215
+                slstAllPages.Add(sclsPageInfo);
+                slstAllPageNames.Add(sclsPageInfo.Name);
+                foreach (string sstrPagesOpenForm_loopVariable in sclsPageInfo.OpenFormNames)
+                {
+                    sstrPagesOpenForm = sstrPagesOpenForm_loopVariable;
+                    if (!slstAllPageNames.Contains(sstrPagesOpenForm, StringComparer.OrdinalIgnoreCase))
+                    {
+                        slstUnprocessPageNames.Add(sstrPagesOpenForm);
+                    }
+                }
+                slonTempPagesProcess = slonTempPagesProcess + 1;
             }
+            MessageBox.Show("done");//150215
         }
         public Form1()
         {

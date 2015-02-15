@@ -40,10 +40,10 @@ namespace wfavbVBA2PHPone
 			sstrSource = OpenFile(pstrFilePathAndName);
 
 			int slonProcessLocation = 0;
-            long sslonProcessLocation = 0;
+//150215            long sslonProcessLocation = 0;
 			//sstrSource string starts at location 1
 			slonProcessLocation = 1;
-            sslonProcessLocation = 1;
+//150215            sslonProcessLocation = 1;
 
 			//get control info
 			ControlsInfo sclsControlsInfo = null;
@@ -90,12 +90,15 @@ namespace wfavbVBA2PHPone
 			Scripting.TextStream ts = null;
 
 			functionReturnValue = "";
-			if (fs.FileExists(pstrFilePathAndName)) {
-				ts = fs.OpenTextFile(pstrFilePathAndName);
-				sstrFile = ts.ReadAll();
-				ts.Close();
-				functionReturnValue = sstrFile;
-			}
+            if (fs.FileExists(pstrFilePathAndName))
+            {
+                ts = fs.OpenTextFile(pstrFilePathAndName);
+                sstrFile = ts.ReadAll();
+                ts.Close();
+                functionReturnValue = sstrFile;
+            }
+            else//150215
+                MessageBox.Show("File Not Found");//150215
 			return functionReturnValue;
 		}
 
