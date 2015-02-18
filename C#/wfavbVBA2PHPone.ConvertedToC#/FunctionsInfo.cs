@@ -13,37 +13,26 @@ namespace wfavbVBA2PHPone
 {
 	public class FunctionsInfo
 	{
+
 		private Collection mlstFunctions = new Collection();
 		public Collection Functions {
 			get { return mlstFunctions; }
 		}
-		//Set(ByVal pstrName As String)
-		//    mstrName = pstrName
-		//End Set
 
 		private List<string> mlstOpenFormNames = new List<string>();
 		public List<string> OpenFormNames {
 			get { return mlstOpenFormNames; }
 		}
-		//Set(ByVal pstrName As String)
-		//    mstrName = pstrName
-		//End Set
 
 		private long mlonNumOpenFormNames;
 		public long NumOpenFormNames {
 			get { return mlonNumOpenFormNames; }
 		}
-		//Set(ByVal pstrName As String)
-		//    mstrName = pstrName
-		//End Set
 
 		private bool mbolHasFormLoad;
 		public bool HasFormLoad {
 			get { return mbolHasFormLoad; }
 		}
-		//Set(ByVal pstrName As String)
-		//    mstrName = pstrName
-		//End Set
 		private bool mbolHasFormOpen;
 		public bool HasFormOpen {
 			get { return mbolHasFormOpen; }
@@ -58,23 +47,17 @@ namespace wfavbVBA2PHPone
         {
             get { return mbolHasCurrent; }
         }
-		//Set(ByVal pstrName As String)
-		//    mstrName = pstrName
-		//End Set
+
 		private bool mbolHasFormUnload;
 		public bool HasFormUnload {
 			get { return mbolHasFormUnload; }
 		}
-		//Set(ByVal pstrName As String)
-		//    mstrName = pstrName
-		//End Set
         private bool mbolHasFormClose;
         public bool HasFormClose
         {
             get { return mbolHasFormClose; }
         }
 
-		//150110    Public Function GetFunctionsInfo(pstrSource As String, ByRef plonProcessLocation As Long) As List(Of FunctionInfo)
 		public FunctionsInfo(string pstrSource, ref int plonProcessLocation)
 		{
 			mlonNumOpenFormNames = 0;
@@ -83,22 +66,20 @@ namespace wfavbVBA2PHPone
             mbolHasActive = false;
             mbolHasCurrent = false;
             mbolHasFormClose = false;
-			while (!(plonProcessLocation >= Strings.Len(pstrSource))) {
+			while (!(plonProcessLocation >= pstrSource.Length)) {
 				//get function info
 				FunctionInfo sclsFunctionInfo = null;
 				sclsFunctionInfo = new FunctionInfo();
 				bool sbolFoundFunction = false;
 				sbolFoundFunction = sclsFunctionInfo.PopulateFunctionInfoWithNextFunction(pstrSource, ref plonProcessLocation);
 				if (sbolFoundFunction) {
-//150215                    mlstFunctions.Add(sclsFunctionInfo, Strings.LCase(sclsFunctionInfo.Name));
                     mlstFunctions.Add(sclsFunctionInfo, sclsFunctionInfo.Name.ToLower());
-					foreach (string OpenFormName_loopVariable in sclsFunctionInfo.OpenFormNames) {
-						OpenFormName = OpenFormName_loopVariable;
-						//moving making Unique just to Forms1 file
-						//If Not mlstOpenFormNames.Contains(OpenFormName) Then
-						//    mlstOpenFormNames.Add(OpenFormName)
-						//End If
-						mlstOpenFormNames.Add(OpenFormName);
+//        public string OpenFormName { get; set; }
+//					foreach (string OpenFormName_loopVariable in sclsFunctionInfo.OpenFormNames) {
+					foreach (string sstrEachOpenFormName in sclsFunctionInfo.OpenFormNames) {
+//						OpenFormName = OpenFormName_loopVariable;
+//                        mlstOpenFormNames.Add(OpenFormName);
+                        mlstOpenFormNames.Add(sstrEachOpenFormName);
 						mlonNumOpenFormNames = mlonNumOpenFormNames + 1;
 					}
 					//from http://bytes.com/topic/access/answers/196005-difference-between-form_open-form_load about VBA
@@ -129,6 +110,5 @@ namespace wfavbVBA2PHPone
 			return;
 		}
 
-        public string OpenFormName { get; set; }
     }
 }

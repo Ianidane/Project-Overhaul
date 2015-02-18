@@ -27,16 +27,18 @@ namespace wfavbVBA2PHPone
 
             slstAllPages.Add(sclsPageInfo);
             slstAllPageNames.Add(sclsPageInfo.Name);
-            foreach (string sstrPagesOpenForm_loopVariable in sclsPageInfo.OpenFormNames)
+//            foreach (string sstrPagesOpenForm_loopVariable in sclsPageInfo.OpenFormNames)
+                foreach (string sstrEachPagesOpenForm in sclsPageInfo.OpenFormNames)
             {
-                sstrPagesOpenForm = sstrPagesOpenForm_loopVariable;
-                if (!slstAllPageNames.Contains(sstrPagesOpenForm, StringComparer.OrdinalIgnoreCase))
+//                sstrPagesOpenForm = sstrPagesOpenForm_loopVariable;
+//                if (!slstAllPageNames.Contains(sstrPagesOpenForm, StringComparer.OrdinalIgnoreCase))
+                if (!slstAllPageNames.Contains(sstrEachPagesOpenForm, StringComparer.OrdinalIgnoreCase))
                 {
-                    slstUnprocessPageNames.Add(sstrPagesOpenForm);
+//                    slstUnprocessPageNames.Add(sstrPagesOpenForm);
+                    slstUnprocessPageNames.Add(sstrEachPagesOpenForm);
                 }
             }
 
-            //enable code below to process more than just first page
             //only process 20 pages for now
             int slonTempPagesProcess = 0;
             while (slstUnprocessPageNames.Count > 0 & slonTempPagesProcess < 21)
@@ -46,27 +48,29 @@ namespace wfavbVBA2PHPone
 
                 slstUnprocessPageNames.Remove(slstUnprocessPageNames[0]);
 
-                //150215
                 slstAllPages.Add(sclsPageInfo);
                 slstAllPageNames.Add(sclsPageInfo.Name);
-                foreach (string sstrPagesOpenForm_loopVariable in sclsPageInfo.OpenFormNames)
+//                foreach (string sstrPagesOpenForm_loopVariable in sclsPageInfo.OpenFormNames)
+                foreach (string sstrEachPagesOpenForm in sclsPageInfo.OpenFormNames)
                 {
-                    sstrPagesOpenForm = sstrPagesOpenForm_loopVariable;
-                    if (!slstAllPageNames.Contains(sstrPagesOpenForm, StringComparer.OrdinalIgnoreCase))
+//                    sstrPagesOpenForm = sstrPagesOpenForm_loopVariable;
+//                    if (!slstAllPageNames.Contains(sstrPagesOpenForm, StringComparer.OrdinalIgnoreCase))
+                    if (!slstAllPageNames.Contains(sstrEachPagesOpenForm, StringComparer.OrdinalIgnoreCase))
                     {
-                        slstUnprocessPageNames.Add(sstrPagesOpenForm);
+//                        slstUnprocessPageNames.Add(sstrPagesOpenForm);
+                        slstUnprocessPageNames.Add(sstrEachPagesOpenForm);
                     }
                 }
                 slonTempPagesProcess = slonTempPagesProcess + 1;
             }
-            MessageBox.Show("done");//150215
+            MessageBox.Show("done");
         }
         public Form1()
         {
             InitializeComponent();
         }
 
-        public string sstrPagesOpenForm { get; set; }
+//        public string sstrPagesOpenForm { get; set; }
 
     }
 }
