@@ -37,6 +37,10 @@ namespace wfavbVBA2PHPone
 		{
 			bool sbolFoundFunction = false;
 			sbolFoundFunction = false;
+
+            if (!(plonProcessLocation + 8 < pstrSource.Length)) //would prefer SafeSubString
+                return sbolFoundFunction;
+
 			//note - you'll notice most "Do Until"s will have "Or plonProcessLocation >= Len(pstrSource)" in the condition for stopping the looping.  This is to be sure if we unexpectedly find the end of the file that we don't error.  Probably would be a better idea to actually throw an error if that happened rather than just falling out of the function
 			//find Sub or Function
 			while (!(pstrSource.Substring(plonProcessLocation, 3) == "Sub" | pstrSource.Substring(plonProcessLocation, 8) == "Function" | plonProcessLocation >= pstrSource.Length)) {

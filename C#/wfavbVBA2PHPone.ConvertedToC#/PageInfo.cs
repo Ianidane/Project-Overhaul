@@ -31,7 +31,8 @@ namespace wfavbVBA2PHPone
 		Collection mlstFunctions = new Collection();
 		public PageInfo(string pstrFilePathAndName)
 		{
-			mstrPageName = Strings.LCase(RemovePath(pstrFilePathAndName));
+//            mstrPageName = Strings.LCase(RemovePath(pstrFilePathAndName));
+            mstrPageName = RemovePath(pstrFilePathAndName);
 
 			string sstrSource = null;
 			sstrSource = OpenFile(pstrFilePathAndName);
@@ -87,7 +88,7 @@ namespace wfavbVBA2PHPone
 			sstrPHP = sstrPHP + "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0 Transitional//EN\" > " + System.Environment.NewLine;
 			sstrPHP = sstrPHP + "<html>" + System.Environment.NewLine;
 			sstrPHP = sstrPHP + "  <head>" + System.Environment.NewLine;
-			sstrPHP = sstrPHP + "    <link href=\"images/AWH/AWHirb.css\" rel=\"stylesheet\" type=\"text/css\">" + System.Environment.NewLine;
+			sstrPHP = sstrPHP + "    <link href=\"images/NewPro.css\" rel=\"stylesheet\" type=\"text/css\">" + System.Environment.NewLine;
 			sstrPHP = sstrPHP + "    <meta http-equiv=\"Content-Type\" content=\"text/html;\">" + System.Environment.NewLine;
 			sstrPHP = sstrPHP + "    <title>NewPro</title>" + System.Environment.NewLine;
 
@@ -107,7 +108,7 @@ namespace wfavbVBA2PHPone
 //				if (sclsFunction.NumOpenFormNames > 0) {
 				if (sclsEachFunction.NumOpenFormNames > 0) {
 //                    sstrPHP = sstrPHP + "        location.href = \"" + sclsFunction.OpenFormNames[0] + ".php\";" + System.Environment.NewLine;
-                    sstrPHP = sstrPHP + "        location.href = \"" + sclsEachFunction.OpenFormNames[0] + ".php\";" + System.Environment.NewLine;
+                    sstrPHP = sstrPHP + "        location.href = \"Form_" + sclsEachFunction.OpenFormNames[0] + ".php\";" + System.Environment.NewLine;
 				}
 				sstrPHP = sstrPHP + "      }" + System.Environment.NewLine;
 			}
@@ -115,13 +116,13 @@ namespace wfavbVBA2PHPone
 			sstrPHP = sstrPHP + "    </script>" + System.Environment.NewLine;
 
 			sstrPHP = sstrPHP + "  </head>" + System.Environment.NewLine;
-			sstrPHP = sstrPHP + "  <body ";
+			sstrPHP = sstrPHP + "  <body";
 			//from http://bytes.com/topic/access/answers/196005-difference-between-form_open-form_load about VBA
 			//When you first open a form, the following events occur in this order:Open Þ Load Þ Resize Þ Activate Þ Current
 			//If you Then 're trying to decide whether to use the Open or Load event for your macro or event procedure, one significant difference is that the Open event can be canceled, but the Load event can't. For example, if you're dynamically building a record source for a form in an event procedure for the Form 's Open event, you can cancel opening the form if there are no records to display.
 			//When you close a form, the following events occur in this order:Unload Þ Deactivate Þ Close
 			if (mclsFunctionsInfo.HasFormLoad | mclsFunctionsInfo.HasFormOpen | mclsFunctionsInfo.HasFormActive | mclsFunctionsInfo.HasFormCurrent) {
-				sstrPHP += "onLoad=\"";
+				sstrPHP += " onLoad=\"";
 				if (mclsFunctionsInfo.HasFormLoad)
 					sstrPHP += "Form_Load();";
 				if (mclsFunctionsInfo.HasFormOpen)
@@ -133,7 +134,7 @@ namespace wfavbVBA2PHPone
 				sstrPHP = sstrPHP + "\"";
 			}
 			if (mclsFunctionsInfo.HasFormUnload | mclsFunctionsInfo.HasFormClose) {
-				sstrPHP += "onUnload=\"";
+				sstrPHP += " onUnload=\"";
                 if (mclsFunctionsInfo.HasFormUnload)
                     sstrPHP += "Form_Unload();";
                 if (mclsFunctionsInfo.HasFormClose)
