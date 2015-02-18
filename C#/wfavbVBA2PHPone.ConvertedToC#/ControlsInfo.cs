@@ -17,6 +17,20 @@ namespace wfavbVBA2PHPone
 		{
 		}
 
+        //150215
+        private Collection mcolControlsByName = new Collection();
+        public Collection ControlsByName
+        {
+            get { return mcolControlsByName; }
+        }
+
+        //150215
+        private Collection mcolAllControls = new Collection();
+        public Collection AllControls
+        {
+            get { return mcolAllControls; }
+        }
+
 //150203		public ControlInfo GetControlsInfo(string pstrSource, ref long plonProcessLocation)
 		public ControlInfo GetControlsInfo(string pstrSource, ref int plonProcessLocation)
 		{
@@ -24,11 +38,12 @@ namespace wfavbVBA2PHPone
             int slonNestDepth = 0; //150203
 			slonNestDepth = 0;
 
-			Collection slstAllControls = new Collection();
-			Collection scolControlsByName = new Collection();
+//150216			Collection slstAllControls = new Collection();
+//150215			Collection scolControlsByName = new Collection();
 
 			ControlInfo sclsControlInfo = null;
-			sclsControlInfo = new ControlInfo(pstrSource, ref plonProcessLocation, ref slonNestDepth, ref slstAllControls, ref scolControlsByName);
+//150215            sclsControlInfo = new ControlInfo(pstrSource, ref plonProcessLocation, ref slonNestDepth, ref slstAllControls, ref scolControlsByName); //not sure slstAllControls is being used
+            sclsControlInfo = new ControlInfo(pstrSource, ref plonProcessLocation, ref slonNestDepth, ref mcolAllControls, ref mcolControlsByName); //not sure slstAllControls is being used
 
 			return sclsControlInfo;
 		}

@@ -48,6 +48,16 @@ namespace wfavbVBA2PHPone
 		public bool HasFormOpen {
 			get { return mbolHasFormOpen; }
 		}
+        private bool mbolHasActive;
+        public bool HasFormActive
+        {
+            get { return mbolHasActive; }
+        }
+        private bool mbolHasCurrent;
+        public bool HasFormCurrent
+        {
+            get { return mbolHasCurrent; }
+        }
 		//Set(ByVal pstrName As String)
 		//    mstrName = pstrName
 		//End Set
@@ -58,6 +68,11 @@ namespace wfavbVBA2PHPone
 		//Set(ByVal pstrName As String)
 		//    mstrName = pstrName
 		//End Set
+        private bool mbolHasFormClose;
+        public bool HasFormClose
+        {
+            get { return mbolHasFormClose; }
+        }
 
 		//150110    Public Function GetFunctionsInfo(pstrSource As String, ByRef plonProcessLocation As Long) As List(Of FunctionInfo)
 		public FunctionsInfo(string pstrSource, ref int plonProcessLocation)
@@ -65,6 +80,9 @@ namespace wfavbVBA2PHPone
 			mlonNumOpenFormNames = 0;
 			mbolHasFormLoad = false;
 			mbolHasFormOpen = false;
+            mbolHasActive = false;
+            mbolHasCurrent = false;
+            mbolHasFormClose = false;
 			while (!(plonProcessLocation >= Strings.Len(pstrSource))) {
 				//get function info
 				FunctionInfo sclsFunctionInfo = null;
@@ -72,7 +90,8 @@ namespace wfavbVBA2PHPone
 				bool sbolFoundFunction = false;
 				sbolFoundFunction = sclsFunctionInfo.PopulateFunctionInfoWithNextFunction(pstrSource, ref plonProcessLocation);
 				if (sbolFoundFunction) {
-					mlstFunctions.Add(sclsFunctionInfo, Strings.LCase(sclsFunctionInfo.Name));
+//150215                    mlstFunctions.Add(sclsFunctionInfo, Strings.LCase(sclsFunctionInfo.Name));
+                    mlstFunctions.Add(sclsFunctionInfo, sclsFunctionInfo.Name.ToLower());
 					foreach (string OpenFormName_loopVariable in sclsFunctionInfo.OpenFormNames) {
 						OpenFormName = OpenFormName_loopVariable;
 						//moving making Unique just to Forms1 file
@@ -88,20 +107,20 @@ namespace wfavbVBA2PHPone
 					//When you close a form, the following events occur in this order:Unload Þ Deactivate Þ Close
 					if (Strings.LCase(sclsFunctionInfo.Name) == "form_open") {
 						mbolHasFormOpen = true;
-					} else if (Strings.LCase(sclsFunctionInfo.Name) == "form_load") {
+					} else if (sclsFunctionInfo.Name.ToLower() == "form_load") {
 						mbolHasFormLoad = true;
-					} else if (Strings.LCase(sclsFunctionInfo.Name) == "form_resize") {
-						Interaction.MsgBox("config form_resize - update PageInfo.vb:WritePHPPage as well");
-					} else if (Strings.LCase(sclsFunctionInfo.Name) == "form_activate") {
-						Interaction.MsgBox("config form_activate - update PageInfo.vb:WritePHPPage as well");
-					} else if (Strings.LCase(sclsFunctionInfo.Name) == "form_current") {
-						Interaction.MsgBox("config form_current - update PageInfo.vb:WritePHPPage as well");
-					} else if (Strings.LCase(sclsFunctionInfo.Name) == "form_unLoad") {
+					} else if (sclsFunctionInfo.Name.ToLower() == "form_resize") {
+						MessageBox.Show("config form_resize - update PageInfo.vb:WritePHPPage as well");
+					} else if (sclsFunctionInfo.Name.ToLower() == "form_activate") {
+						mbolHasActive = true;
+					} else if (sclsFunctionInfo.Name.ToLower() == "form_current") {
+						mbolHasCurrent = true;
+					} else if (sclsFunctionInfo.Name.ToLower() == "form_unLoad") {
 						mbolHasFormUnload = true;
-					} else if (Strings.LCase(sclsFunctionInfo.Name) == "form_deactivate") {
-						Interaction.MsgBox("config form_deactivate - update PageInfo.vb:WritePHPPage as well");
-					} else if (Strings.LCase(sclsFunctionInfo.Name) == "form_close") {
-						Interaction.MsgBox("config form_close - update PageInfo.vb:WritePHPPage as well");
+					} else if (sclsFunctionInfo.Name.ToLower() == "form_deactivate") {
+						MessageBox.Show("config form_deactivate - update PageInfo.vb:WritePHPPage as well");
+					} else if (sclsFunctionInfo.Name.ToLower() == "form_close") {
+						mbolHasFormClose = true;
 					}
 				} else {
 					break; // TODO: might not be correct. Was : Exit Do

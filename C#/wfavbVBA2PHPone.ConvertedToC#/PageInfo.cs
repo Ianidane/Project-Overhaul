@@ -9,6 +9,7 @@ using System.Windows.Forms;
 using System.Linq;
 using System.Xml.Linq;
 using System.Threading.Tasks;
+
 namespace wfavbVBA2PHPone
 {
 	public class PageInfo
@@ -30,6 +31,8 @@ namespace wfavbVBA2PHPone
 		//    mstrName = pstrName
 		//End Set
 
+        Collection mcolControlsByName;//150215
+        Collection mcolAllControls;
 		FunctionsInfo mclsFunctionsInfo;
 		Collection mlstFunctions = new Collection();
 		public PageInfo(string pstrFilePathAndName)
@@ -42,7 +45,8 @@ namespace wfavbVBA2PHPone
 			int slonProcessLocation = 0;
 //150215            long sslonProcessLocation = 0;
 			//sstrSource string starts at location 1
-			slonProcessLocation = 1;
+//            slonProcessLocation = 1;
+            slonProcessLocation = 0;
 //150215            sslonProcessLocation = 1;
 
 			//get control info
@@ -52,6 +56,8 @@ namespace wfavbVBA2PHPone
 			//first (top) control should be Begin Form
 //150203            sclsFormControl = sclsControlsInfo.GetControlsInfo(sstrSource, ref sslonProcessLocation);
             sclsFormControl = sclsControlsInfo.GetControlsInfo(sstrSource, ref slonProcessLocation);//150203
+            mcolControlsByName = sclsControlsInfo.ControlsByName;
+            mcolAllControls = sclsControlsInfo.AllControls;
 			//Ian - break here 
 			//inpect mlstAttributes and you can see attributes in a control
 			//if you inspect sclsFormControl you can keep drilling down into SubControls to see the whole control part of the file 
@@ -105,66 +111,92 @@ namespace wfavbVBA2PHPone
 		public void WritePHPPage(string pstrWriteToPHPFilesLocation, bool pbolBackupExistingPHPPages)
 		{
 			if (pbolBackupExistingPHPPages) {
-				Interaction.MsgBox("Backing up Existing PHP Pages is not done yet");
+				MessageBox.Show("Backing up Existing PHP Pages is not done yet");
 				return;
 			}
 
 			string sstrPHP = null;
 			sstrPHP = "";
-			sstrPHP = sstrPHP + "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0 Transitional//EN\" > " + Constants.vbCrLf;
-			sstrPHP = sstrPHP + "<html>" + Constants.vbCrLf;
-			sstrPHP = sstrPHP + "  <head>" + Constants.vbCrLf;
-			sstrPHP = sstrPHP + "    <link href=\"images/AWH/AWHirb.css\" rel=\"stylesheet\" type=\"text/css\">" + Constants.vbCrLf;
-			sstrPHP = sstrPHP + "    <meta http-equiv=\"Content-Type\" content=\"text/html;\">" + Constants.vbCrLf;
-			sstrPHP = sstrPHP + "    <title>NewPro</title>" + Constants.vbCrLf;
+			sstrPHP = sstrPHP + "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0 Transitional//EN\" > " + System.Environment.NewLine;
+			sstrPHP = sstrPHP + "<html>" + System.Environment.NewLine;
+			sstrPHP = sstrPHP + "  <head>" + System.Environment.NewLine;
+			sstrPHP = sstrPHP + "    <link href=\"images/AWH/AWHirb.css\" rel=\"stylesheet\" type=\"text/css\">" + System.Environment.NewLine;
+			sstrPHP = sstrPHP + "    <meta http-equiv=\"Content-Type\" content=\"text/html;\">" + System.Environment.NewLine;
+			sstrPHP = sstrPHP + "    <title>NewPro</title>" + System.Environment.NewLine;
 
 			//styles to place buttons
-			sstrPHP = sstrPHP + "    <style type=\"text/css\">" + Constants.vbCrLf;
-			sstrPHP = sstrPHP + "" + Constants.vbCrLf;
-			sstrPHP = sstrPHP + "    </style>" + Constants.vbCrLf;
+			sstrPHP = sstrPHP + "    <style type=\"text/css\">" + System.Environment.NewLine;
+			sstrPHP = sstrPHP + "" + System.Environment.NewLine;
+			sstrPHP = sstrPHP + "    </style>" + System.Environment.NewLine;
 
 			//function code
-			sstrPHP = sstrPHP + "    <script type=\"text/JavaScript\">" + Constants.vbCrLf;
+			sstrPHP = sstrPHP + "    <script type=\"text/JavaScript\">" + System.Environment.NewLine;
 			FunctionInfo sclsFunction = null;
 			foreach (FunctionInfo sclsFunction_loopVariable in mlstFunctions) {
 				sclsFunction = sclsFunction_loopVariable;
-				sstrPHP = sstrPHP + "      function " + sclsFunction.Name + "(){" + Constants.vbCrLf;
+				sstrPHP = sstrPHP + "      function " + sclsFunction.Name + "(){" + System.Environment.NewLine;
 				if (sclsFunction.NumOpenFormNames > 0) {
-					sstrPHP = sstrPHP + "        location.href = \"" + sclsFunction.OpenFormNames[0] + ".php\";" + Constants.vbCrLf;
+					sstrPHP = sstrPHP + "        location.href = \"" + sclsFunction.OpenFormNames[0] + ".php\";" + System.Environment.NewLine;
 				}
-				sstrPHP = sstrPHP + "      }" + Constants.vbCrLf;
+				sstrPHP = sstrPHP + "      }" + System.Environment.NewLine;
 			}
-			sstrPHP = sstrPHP + "" + Constants.vbCrLf;
-			sstrPHP = sstrPHP + "    </script>" + Constants.vbCrLf;
+			sstrPHP = sstrPHP + "" + System.Environment.NewLine;
+			sstrPHP = sstrPHP + "    </script>" + System.Environment.NewLine;
 
-			sstrPHP = sstrPHP + "  </head>" + Constants.vbCrLf;
+			sstrPHP = sstrPHP + "  </head>" + System.Environment.NewLine;
 			sstrPHP = sstrPHP + "  <body ";
 			//from http://bytes.com/topic/access/answers/196005-difference-between-form_open-form_load about VBA
 			//When you first open a form, the following events occur in this order:Open Þ Load Þ Resize Þ Activate Þ Current
 			//If you Then 're trying to decide whether to use the Open or Load event for your macro or event procedure, one significant difference is that the Open event can be canceled, but the Load event can't. For example, if you're dynamically building a record source for a form in an event procedure for the Form 's Open event, you can cancel opening the form if there are no records to display.
 			//When you close a form, the following events occur in this order:Unload Þ Deactivate Þ Close
-			if (mclsFunctionsInfo.HasFormLoad | mclsFunctionsInfo.HasFormOpen) {
-				sstrPHP = sstrPHP + "onLoad=\"";
+			if (mclsFunctionsInfo.HasFormLoad | mclsFunctionsInfo.HasFormOpen | mclsFunctionsInfo.HasFormActive | mclsFunctionsInfo.HasFormCurrent) {
+				sstrPHP += "onLoad=\"";
 				if (mclsFunctionsInfo.HasFormLoad)
-					sstrPHP = sstrPHP + "Form_Load();";
-				if (mclsFunctionsInfo.HasFormLoad)
-					sstrPHP = sstrPHP + "Form_Open();";
+					sstrPHP += "Form_Load();";
+				if (mclsFunctionsInfo.HasFormOpen)
+					sstrPHP += "Form_Open();";
+                if (mclsFunctionsInfo.HasFormActive)
+                    sstrPHP += "Form_Active();";
+                if (mclsFunctionsInfo.HasFormCurrent)
+                    sstrPHP += "Form_Current();";
 				sstrPHP = sstrPHP + "\"";
 			}
-			if (mclsFunctionsInfo.HasFormUnload)
-				sstrPHP = sstrPHP + "onUnload=\"Form_Unload();\" ";
-			sstrPHP = sstrPHP + ">" + Constants.vbCrLf;
+			if (mclsFunctionsInfo.HasFormUnload | mclsFunctionsInfo.HasFormClose) {
+				sstrPHP += "onUnload=\"";
+                if (mclsFunctionsInfo.HasFormUnload)
+                    sstrPHP += "Form_Unload();";
+                if (mclsFunctionsInfo.HasFormClose)
+                    sstrPHP += "Form_Close();";
+                sstrPHP += "\"";
+            }
+			sstrPHP = sstrPHP + ">" + System.Environment.NewLine;
+
+
+
+            foreach (ControlInfo sclsControlInfo in mcolAllControls)
+            {
+                //need to make sure that Control has Name before making control
+//MessageBox.Show(sclsControlInfo.Name);
+                if (sclsControlInfo.Name != null)
+                    if (sclsControlInfo.BeginType == "CommandButton")
+                    {
+                        sstrPHP += "    <input type='button' id=" + DropQuotes(sclsControlInfo.Name);
+                        sstrPHP += " value='" + DropQuotes(sclsControlInfo.Caption) + "'";
+                        sstrPHP += " style='position:absolute; left:" + sclsControlInfo.Left/10 + "; top:" + sclsControlInfo.Top/10 + "; width:" + sclsControlInfo.Width/10 + "; height:" + sclsControlInfo.Height/10 + "'";
+                        if (sclsControlInfo.OnClick == "\"[Event Procedure]\"")
+                            sstrPHP += " onclick='" + DropQuotes(sclsControlInfo.Name) + "_Click();'";
+                        sstrPHP += ">" + System.Environment.NewLine;
+                    }
+            }
+
+            sstrPHP = sstrPHP + "" + System.Environment.NewLine;
+            sstrPHP = sstrPHP + "" + System.Environment.NewLine;
 
 
 
 
-			sstrPHP = sstrPHP + "" + Constants.vbCrLf;
-
-
-
-
-			sstrPHP = sstrPHP + "  </body>" + Constants.vbCrLf;
-			sstrPHP = sstrPHP + "</html>" + Constants.vbCrLf;
+			sstrPHP = sstrPHP + "  </body>" + System.Environment.NewLine;
+			sstrPHP = sstrPHP + "</html>" + System.Environment.NewLine;
 
 			WriteFile(pstrWriteToPHPFilesLocation + RemoveFileExtension(mstrPageName) + ".php", sstrPHP);
 		}
@@ -187,20 +219,38 @@ namespace wfavbVBA2PHPone
 		{
 			int sintLastSlash = 0;
 			int sintInc = 0;
-			for (sintInc = 1; sintInc <= Strings.Len(pstrFileNameAndPath) + 1; sintInc++) {
-				if (Strings.Mid(pstrFileNameAndPath, sintInc, 1) == "\\")
-					sintLastSlash = sintInc;
+//150215			for (sintInc = 1; sintInc <= pstrFileNameAndPath.Length + 1; sintInc++) {
+			for (sintInc = 0; sintInc < pstrFileNameAndPath.Length; sintInc++) {
+				if (pstrFileNameAndPath.Substring(sintInc, 1) == "\\")
+					sintLastSlash = sintInc + 1;
 			}
-			return Strings.Right(pstrFileNameAndPath, Strings.Len(pstrFileNameAndPath) - sintLastSlash);
+//150215            return Strings.Right(pstrFileNameAndPath, pstrFileNameAndPath.Length - sintLastSlash);
+            return pstrFileNameAndPath.Substring(sintLastSlash);
 		}
 		private string RemoveFileExtension(string pstrFileName)
 		{
 			int sintInc = 0;
-			for (sintInc = 1; sintInc <= Strings.Len(pstrFileName) + 1; sintInc++) {
-				if (Strings.Mid(pstrFileName, sintInc, 1) == ".")
+//			for (sintInc = 1; sintInc <= pstrFileName.Length + 1; sintInc++) {
+			for (sintInc = 0; sintInc <= pstrFileName.Length + 1; sintInc++) {
+				if (pstrFileName.Substring(sintInc, 1) == ".")
 					break; // TODO: might not be correct. Was : Exit For
 			}
-			return Strings.Left(pstrFileName, sintInc - 1);
+//150215            return Strings.Left(pstrFileName, sintInc - 1);
+            return pstrFileName.Substring(0, sintInc);
 		}
+
+        private string DropQuotes(string pstrString)
+        {
+            string sstrQuotesDropped = "";
+            if (pstrString.Substring(0, 1) == "'")
+            {
+                if (pstrString.Substring(pstrString.Length-1, 1) == "'")
+                    return pstrString.Substring(1, pstrString.Length - 2);
+            }
+            else if (pstrString.Substring(0, 1) == "\"")
+                if (pstrString.Substring(pstrString.Length-1, 1) == "\"")
+                    return pstrString.Substring(1, pstrString.Length - 2);
+            return sstrQuotesDropped;
+        }
 	}
 }

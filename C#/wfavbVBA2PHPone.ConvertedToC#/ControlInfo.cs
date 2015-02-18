@@ -23,15 +23,11 @@ namespace wfavbVBA2PHPone
 	public class ControlInfo
 	{
 		private string mstrBeginType;
-		//Public ReadOnly Property BeginType() As String
-		//    Get
-		//        Return mstrBeginType
-		//    End Get
-		//    'Set(ByVal pstrBeginType As String)
-		//    '    mstrBeginType = pstrBeginType
-		//    'End Set
-		//End Property
-
+        public string BeginType
+        {
+            get { return mstrBeginType; }
+        }
+        
 		private List<ControlInfo> mclsSubControls = new List<ControlInfo>();
 		//Public ReadOnly Property SubControls() As List(Of ControlInfo)
 		//    Get
@@ -56,13 +52,56 @@ namespace wfavbVBA2PHPone
 		//    'End Set
 		//End Property
 
+        //private Boolean mbolHasName;
+        //public Boolean HasName
+        //{
+        //    get { return mbolHasName; }
+        //}
+
+        private string mstrName;
+        public string Name
+        {
+            get { return mstrName; }
+        }
+        private string mstrOnClick;
+        public string OnClick
+        {
+            get { return mstrOnClick; }
+        }
+        private string mstrCaption;
+        public string Caption
+        {
+            get { return mstrCaption; }
+        }
+        private int mintLeft;
+        public int Left
+        {
+            get { return mintLeft; }
+        }
+        private int mintTop;
+        public int Top
+        {
+            get { return mintTop; }
+        }
+        private int mintWidth;
+        public int Width
+        {
+            get { return mintWidth; }
+        }
+        private int mintHeight;
+        public int Height
+        {
+            get { return mintHeight; }
+        }
 
 		private List<Attribute> mlstAttributes = new List<Attribute>();
 		private string mstrControlLines;
-        private string pstrSource;
-        private long plonProcessLocation;
-        private long slonNestDepth;
-        private Collection slstAllControls;
+
+//        private string pstrSource;
+//        private long plonProcessLocation;
+//        private long slonNestDepth;
+
+//150216        private Collection slstAllControls;
         private Collection scolControlsByName;
 		//Public Property ControlLines() As String
 		//    Get
@@ -77,26 +116,38 @@ namespace wfavbVBA2PHPone
 		//don't think plonNestDepth is really needed - pcolControlsByName just parameter so far, code to set not done yet
 		public ControlInfo(string pstrSource, ref int plonProcessLocation, ref int plonNestDepth, ref Collection plstAllControls, ref Collection pcolControlsByName)
 		{
+            plstAllControls.Add(this); //150216
+
+//150216            mbolHasName = false; //150216
+
 			//note - you'll notice most "Do Until"s will have "Or plonProcessLocation >= Len(pstrSource)" in the condition for stopping the looping.  This is to be sure if we unexpectedly find the end of the file that we don't error.  Probably would be a better idea to actually throw an error if that happened rather than just falling out of the function
-			while (!(Strings.Mid(pstrSource, plonProcessLocation, Strings.Len("Begin")) == "Begin" | plonProcessLocation >= Strings.Len(pstrSource))) {
+//			while (!(Strings.Mid(pstrSource, plonProcessLocation, Strings.Len("Begin")) == "Begin" | plonProcessLocation >= Strings.Len(pstrSource))) {
+			while (!(pstrSource.Substring(plonProcessLocation, 5) == "Begin" | plonProcessLocation >= pstrSource.Length)) {
 				plonProcessLocation = plonProcessLocation + 1;
 			}
 
-			plonProcessLocation = plonProcessLocation + Strings.Len("Begin");
-			//step over Begin
+			plonProcessLocation = plonProcessLocation + 5;//step over "Begin"
 			plonNestDepth = plonNestDepth + 1;
 
+            if(pstrSource.Substring(plonProcessLocation, 1) == " ") //if there is a begin type then there will be a space
+                plonProcessLocation++;
+
 			//find Begin type (if it has one)
-			if (Strings.Mid(pstrSource, plonProcessLocation, 2) != Constants.vbCrLf) {
+//			if (Strings.Mid(pstrSource, plonProcessLocation, 2) != Constants.vbCrLf) {
+            if(pstrSource.Substring(plonProcessLocation, 2) != System.Environment.NewLine)
+            {
 				//has Begin type
-				plonProcessLocation = plonProcessLocation + 1;
-				//step over space after Begin
+//150215
+//				plonProcessLocation = plonProcessLocation + 1;
+//				//step over space after Begin
 
 				//set start Begin type
 				int slonStartBeginTypePos = 0;
 				slonStartBeginTypePos = plonProcessLocation;
 				//find end of Begin type - pretty sure that function always is vbCrLf
-				while (!(Strings.Mid(pstrSource, plonProcessLocation, 2) == Constants.vbCrLf | plonProcessLocation >= Strings.Len(pstrSource))) {
+//				while (!(Strings.Mid(pstrSource, plonProcessLocation, 2) == Constants.vbCrLf | plonProcessLocation >= Strings.Len(pstrSource))) {
+                while (!(pstrSource.Substring(plonProcessLocation, 2) == System.Environment.NewLine | plonProcessLocation >= pstrSource.Length))
+                {
 					plonProcessLocation = plonProcessLocation + 1;
 				}
 				//set length of Begin type
@@ -104,22 +155,26 @@ namespace wfavbVBA2PHPone
 				slonBeginTypeLength = plonProcessLocation - slonStartBeginTypePos;
 
 				//Begin type
-				mstrBeginType = Strings.Mid(pstrSource, slonStartBeginTypePos, slonBeginTypeLength);
+//                mstrBeginType = Strings.Mid(pstrSource, slonStartBeginTypePos, slonBeginTypeLength);
+                mstrBeginType = pstrSource.Substring(slonStartBeginTypePos, slonBeginTypeLength);
 			}
-			plonProcessLocation = plonProcessLocation + 2;
-			//step over vbCRLf
+			plonProcessLocation = plonProcessLocation + 2;//step over vbCRLf
 			mlonControlLinesStartPos = plonProcessLocation;
 
-			while (!(Strings.Mid(pstrSource, plonProcessLocation, Strings.Len("End")) == "End")) {
-				while (!(Strings.Mid(pstrSource, plonProcessLocation, Strings.Len(" ")) != " " | plonProcessLocation >= Strings.Len(pstrSource))) {
+//			while (!(Strings.Mid(pstrSource, plonProcessLocation, Strings.Len("End")) == "End")) { //run loop until finding "End"
+			while (!(pstrSource.Substring(plonProcessLocation,3) == "End")) { //run loop until finding "End"
+//				while (!(Strings.Mid(pstrSource, plonProcessLocation, Strings.Len(" ")) != " " | plonProcessLocation >= Strings.Len(pstrSource))) {
+				while (!(pstrSource.Substring(plonProcessLocation, 1) != " " | plonProcessLocation >= pstrSource.Length)) {
 					plonProcessLocation = plonProcessLocation + 1;
 				}
 
-				if (Strings.Mid(pstrSource, plonProcessLocation, Strings.Len("Begin")) == "Begin") {
+//				if (Strings.Mid(pstrSource, plonProcessLocation, Strings.Len("Begin")) == "Begin") {
+				if (pstrSource.Substring(plonProcessLocation, 5) == "Begin") {
 					ControlInfo sclsControlInfo = null;
 					sclsControlInfo = new ControlInfo(pstrSource, ref plonProcessLocation, ref plonNestDepth, ref plstAllControls,ref pcolControlsByName);
 					mclsSubControls.Add(sclsControlInfo);
-				} else if (Strings.Mid(pstrSource, plonProcessLocation, Strings.Len("End")) == "End") {
+//150215				} else if (Strings.Mid(pstrSource, plonProcessLocation, Strings.Len("End")) == "End") {
+				} else if (pstrSource.Substring(plonProcessLocation, 3) == "End") {
 					//do nothing - will kick out of Do Until loop
 				} else {
 					//its an Attribute
@@ -129,25 +184,39 @@ namespace wfavbVBA2PHPone
 					//AttrName
 					int slonStartAttrNamePos = 0;
 					slonStartAttrNamePos = plonProcessLocation;
-					while (!(Strings.Mid(pstrSource, plonProcessLocation, Strings.Len(" ")) == " " | plonProcessLocation >= Strings.Len(pstrSource))) {
+//					while (!(Strings.Mid(pstrSource, plonProcessLocation, Strings.Len(" ")) == " " | plonProcessLocation >= Strings.Len(pstrSource))) {
+					while (!(pstrSource.Substring(plonProcessLocation, 1) == " " | plonProcessLocation >= pstrSource.Length)) { //find space - there is always a space after attr name
 						plonProcessLocation = plonProcessLocation + 1;
 					}
-					sstcAttr.Name = Strings.Mid(pstrSource, slonStartAttrNamePos, plonProcessLocation - slonStartAttrNamePos);
+//                    sstcAttr.Name = Strings.Mid(pstrSource, slonStartAttrNamePos, plonProcessLocation - slonStartAttrNamePos);
+                    sstcAttr.Name = pstrSource.Substring(slonStartAttrNamePos, plonProcessLocation - slonStartAttrNamePos);
 
-					while (!(Strings.Mid(pstrSource, plonProcessLocation, Strings.Len("=")) == "=" | plonProcessLocation >= Strings.Len(pstrSource))) {
+//					while (!(Strings.Mid(pstrSource, plonProcessLocation, Strings.Len("=")) == "=" | plonProcessLocation >= Strings.Len(pstrSource))) {
+					while (!(pstrSource.Substring(plonProcessLocation, 1) == "=" | plonProcessLocation >= pstrSource.Length)) {
 						plonProcessLocation = plonProcessLocation + 1;
 					}
-					plonProcessLocation = plonProcessLocation + Strings.Len("=");
-					//step over =
+					plonProcessLocation = plonProcessLocation + 1; //step over "="
 
 					//AttrValue
 					int slonStartAttrValuePos = 0;
 					slonStartAttrValuePos = plonProcessLocation;
-					while (!(Strings.Mid(pstrSource, plonProcessLocation, Strings.Len(Constants.vbCrLf)) == Constants.vbCrLf | plonProcessLocation >= Strings.Len(pstrSource))) {
+//					while (!(Strings.Mid(pstrSource, plonProcessLocation, Strings.Len(Constants.vbCrLf)) == Constants.vbCrLf | plonProcessLocation >= Strings.Len(pstrSource))) {
+                    while (!(pstrSource.Substring(plonProcessLocation, 2) == System.Environment.NewLine | plonProcessLocation >= pstrSource.Length))
+                    {
 						plonProcessLocation = plonProcessLocation + 1;
 					}
-					sstcAttr.Value = Strings.Mid(pstrSource, slonStartAttrValuePos, plonProcessLocation - slonStartAttrValuePos);
+//                    sstcAttr.Value = Strings.Mid(pstrSource, slonStartAttrValuePos, plonProcessLocation - slonStartAttrValuePos);
+                    sstcAttr.Value = pstrSource.Substring(slonStartAttrValuePos, plonProcessLocation - slonStartAttrValuePos);
 
+                    if (sstcAttr.Name == "Name") mstrName = sstcAttr.Value; //150216
+                    if (sstcAttr.Name == "OnClick") mstrOnClick = sstcAttr.Value; 
+                    if (sstcAttr.Name == "Caption") mstrCaption = sstcAttr.Value;
+                    if (sstcAttr.Name == "Left") mintLeft = Convert.ToInt32(sstcAttr.Value);
+                    if (sstcAttr.Name == "Top") mintTop = Convert.ToInt32(sstcAttr.Value);
+                    if (sstcAttr.Name == "Width") mintWidth = Convert.ToInt32(sstcAttr.Value);
+                    if (sstcAttr.Name == "Height") mintHeight = Convert.ToInt32(sstcAttr.Value);
+
+//150216                    plstAllControls.Add(this); //150216
 
 					if (sstcAttr.Name == "Name") {
 						pcolControlsByName.Add(this, sstcAttr.Value);
@@ -156,25 +225,25 @@ namespace wfavbVBA2PHPone
 
 					//there are Attributes (mostly bits, like GUID, PictureDate,...) that we don't care about - form is GUID = BEGIN .... END
 					if (sstcAttr.Value == " Begin") {
-						while (!(Strings.Mid(pstrSource, plonProcessLocation, Strings.Len("End")) == "End" | plonProcessLocation >= Strings.Len(pstrSource))) {
+//						while (!(Strings.Mid(pstrSource, plonProcessLocation, Strings.Len("End")) == "End" | plonProcessLocation >= Strings.Len(pstrSource))) {
+						while (!(pstrSource.Substring(plonProcessLocation, 3) == "End" | plonProcessLocation >= pstrSource.Length)) {
 							plonProcessLocation = plonProcessLocation + 1;
 						}
-						plonProcessLocation = plonProcessLocation + Strings.Len("End");
-						//step over End
+						plonProcessLocation = plonProcessLocation + 3; //step over "End"
 					} else {
-						mlstAttributes.Add(sstcAttr);
+                        mlstAttributes.Add(sstcAttr);
 					}
-					plonProcessLocation = plonProcessLocation + Strings.Len(Constants.vbCrLf);
-					//step over vbCrLf
+//                    plonProcessLocation = plonProcessLocation + Strings.Len(Constants.vbCrLf);
+                    plonProcessLocation = plonProcessLocation + 2; //step over vbCrLf
 				}
 			}
 
 			plonNestDepth = plonNestDepth - 1;
-			mstrControlLines = Strings.Mid(pstrSource, mlonControlLinesStartPos, plonProcessLocation - mlonControlLinesStartPos);
-			plonProcessLocation = plonProcessLocation + Strings.Len("End");
-			//step over End
-			plonProcessLocation = plonProcessLocation + Strings.Len(Constants.vbCrLf);
-			//step over vbCrLf
+//            mstrControlLines = Strings.Mid(pstrSource, mlonControlLinesStartPos, plonProcessLocation - mlonControlLinesStartPos);
+            mstrControlLines = pstrSource.Substring(mlonControlLinesStartPos, plonProcessLocation - mlonControlLinesStartPos);
+//            plonProcessLocation = plonProcessLocation + Strings.Len("End");
+            plonProcessLocation = plonProcessLocation + 3; //step over "End"
+			plonProcessLocation = plonProcessLocation + 2;//step over vbCrLf
 		}
 //150203
 //        public ControlInfo(string pstrSource, ref long plonProcessLocation, ref long slonNestDepth, ref Collection slstAllControls, Collection scolControlsByName)

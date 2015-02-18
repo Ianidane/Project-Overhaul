@@ -10,8 +10,10 @@ using System.Windows.Forms;
 
 namespace wfavbVBA2PHPone
 {
+
     public partial class Form1 : Form
     {
+
         private void button1_Click(object sender, EventArgs e)
         {
             List<PageInfo> slstAllPages = new List<PageInfo>();
@@ -35,9 +37,9 @@ namespace wfavbVBA2PHPone
             }
 
             //enable code below to process more than just first page
-            //only process 5 pages for now
+            //only process 20 pages for now
             int slonTempPagesProcess = 0;
-            while (slstUnprocessPageNames.Count > 0 & slonTempPagesProcess < 5)
+            while (slstUnprocessPageNames.Count > 0 & slonTempPagesProcess < 21)
             {
                 sclsPageInfo = new PageInfo("C:\\VBA2PHP\\ProIRB_Text\\Form_" + slstUnprocessPageNames[0] + ".txt");
                 sclsPageInfo.WritePHPPage("C:\\VBA2PHP\\ProIRB_PHP\\", sbolBackupExistingPHPPages);
