@@ -146,8 +146,9 @@ namespace wfavbVBA2PHPone
 
             foreach (ControlInfo sclsControlInfo in mcolAllControls)
             {
-                //need to make sure that Control has Name before making control
+                //need to make sure that Control has Name before making control       
                 if (sclsControlInfo.Name != null)
+                    //If statment through BeginType and write out the PHP for each type
                     if (sclsControlInfo.BeginType == "CommandButton")
                     {
                             sstrPHP += "    <input type='button' id=" + DropQuotes(sclsControlInfo.Name);                                                    
@@ -156,77 +157,100 @@ namespace wfavbVBA2PHPone
                         if (sclsControlInfo.OnClick == "\"[Event Procedure]\"")
                             sstrPHP += " onclick='" + DropQuotes(sclsControlInfo.Name) + "_Click();'";
                         sstrPHP += ">" + System.Environment.NewLine;
-                    }
-                if (sclsControlInfo.BeginType == "TextBox")
-                {
-                    if (sclsControlInfo.Name == null)
+                    }              
+                    if (sclsControlInfo.BeginType == "TextBox")
                     {
-                        sstrPHP += "    <input type='text' id='empty'";
-                    }
-                    else
-                    {
-                        sstrPHP += "    <input type='text' id=" + DropQuotes(sclsControlInfo.Name);
-                    }
-                    //sstrPHP += "    <input type='button' id=" + DropQuotes(sclsControlInfo.Name);
-                    if (sclsControlInfo.Caption == null)
-                    {
-                        sstrPHP += " value='empty'";
-                    }
-                    else
-                    {
-                        sstrPHP += " value='" + DropQuotes(sclsControlInfo.Caption) + "'";
-                    }
-                    if (sclsControlInfo.Left == null && sclsControlInfo.Top == null && sclsControlInfo.Width == null && sclsControlInfo.Height == null)
-                    {
-                        sstrPHP += " style=''>";
-                    }
-                    else
-                    {
-                        sstrPHP += " style='position:absolute; left:" + sclsControlInfo.Left / 10 + "; top:" + sclsControlInfo.Top / 10 + "; width:" + sclsControlInfo.Width / 10 + "; height:" + sclsControlInfo.Height / 10 + "'>";
-                    }
-
-                }
-                if (sclsControlInfo.BeginType == "Label")
-                {
-                    if (sclsControlInfo.Name == null)
-                    {
-                        sstrPHP += "    <label id='empty'";
-                    }
-                    else
-                    {
-                        sstrPHP += "    <label id=" + DropQuotes(sclsControlInfo.Name);
-                    }
-                    //sstrPHP += "    <input type='button' id=" + DropQuotes(sclsControlInfo.Name);
-                    if (sclsControlInfo.Caption == null)
-                    {
-                        sstrPHP += " value='empty'";
-                    }
-                    else
-                    {
-                        sstrPHP += " value='" + DropQuotes(sclsControlInfo.Caption) + "'";
-                    }
-                    if (sclsControlInfo.Left == 0 && sclsControlInfo.Top == 0 && sclsControlInfo.Width == 0 && sclsControlInfo.Height == 0)
-                    {
-                        if (sclsControlInfo.Caption == null)
+                        if (sclsControlInfo.Name == null)
                         {
-                            sstrPHP += " style=''></label>";
+                            sstrPHP += "    <input type='text' id='empty'";
                         }
                         else
                         {
-                            sstrPHP += " style=''>" + DropQuotes(sclsControlInfo.Caption) + "</label>";
+                            sstrPHP += "    <input type='text' id=" + DropQuotes(sclsControlInfo.Name);
+                        }                    
+                        if (sclsControlInfo.Caption == null)
+                        {
+                            sstrPHP += " value='empty'";
+                        }
+                        else
+                        {
+                            sstrPHP += " value='" + DropQuotes(sclsControlInfo.Caption) + "'";
+                        }
+                        if (sclsControlInfo.Left == null && sclsControlInfo.Top == null && sclsControlInfo.Width == null && sclsControlInfo.Height == null)
+                        {
+                            sstrPHP += " style=''>";
+                        }
+                        else
+                        {
+                            sstrPHP += " style='position:absolute; left:" + sclsControlInfo.Left / 10 + "; top:" + sclsControlInfo.Top / 10 + "; width:" + sclsControlInfo.Width / 10 + "; height:" + sclsControlInfo.Height / 10 + "'>";
                         }
                     }
-                    else
+                    if (sclsControlInfo.BeginType == "Label")
                     {
-                        sstrPHP += " style='position:absolute; left:" + sclsControlInfo.Left / 10 + "; top:" + sclsControlInfo.Top / 10 + "; width:" + sclsControlInfo.Width / 10 + "; height:" + sclsControlInfo.Height / 10 + "'>" + DropQuotes(sclsControlInfo.Caption) + "</label>";
+                        if (sclsControlInfo.Name == null)
+                        {
+                            sstrPHP += "    <label id='empty'";
+                        }
+                        else
+                        {
+                            sstrPHP += "    <label id=" + DropQuotes(sclsControlInfo.Name);
+                        }                    
+                        if (sclsControlInfo.Caption == null)
+                        {
+                            sstrPHP += " value='empty'";
+                        }
+                        else
+                        {
+                            sstrPHP += " value='" + DropQuotes(sclsControlInfo.Caption) + "'";
+                        }
+                        if (sclsControlInfo.Left == 0 && sclsControlInfo.Top == 0 && sclsControlInfo.Width == 0 && sclsControlInfo.Height == 0)
+                        {
+                            if (sclsControlInfo.Caption == null)
+                            {
+                                sstrPHP += " style='visibility:" + sclsControlInfo.Visible + ";'></label>";
+                            }
+                            else
+                            {
+                                sstrPHP += " style='visibility:" + sclsControlInfo.Visible + ";'>" + DropQuotes(sclsControlInfo.Caption) + "</label>";
+                            }
+                        }
+                        else
+                        {
+                            sstrPHP += " style='position:absolute; left:" + sclsControlInfo.Left / 10 + "; top:" + sclsControlInfo.Top / 10 + "; width:" + sclsControlInfo.Width / 10 + "; height:" + sclsControlInfo.Height / 10 + "; visibility:" + sclsControlInfo.Visible + ";'>" + DropQuotes(sclsControlInfo.Caption) + "</label>";
+                        }
                     }
+                    if (sclsControlInfo.BeginType == "CheckBox")
+                    {
+                        if (sclsControlInfo.Name == null)
+                        {
+                            sstrPHP += "    <input type='checkbox' id='empty'";
+                        }
+                        else
+                        {
+                            sstrPHP += "    <input type='checkbox' id=" + DropQuotes(sclsControlInfo.Name);
+                        }
 
-                }
+                        if (sclsControlInfo.DefaultValue == null)
+                        {
+                            sstrPHP += " value='False'";
+                        }
+                        else
+                        {
+                            sstrPHP += " value='" + DropQuotes(sclsControlInfo.DefaultValue) + "'";
+                        }
+                        if (sclsControlInfo.Left == null && sclsControlInfo.Top == null && sclsControlInfo.Width == null && sclsControlInfo.Height == null)
+                        {
+                            sstrPHP += " style=''>";
+                        }
+                        else
+                        {
+                            sstrPHP += " style='position:absolute; left:" + sclsControlInfo.Left / 10 + "; top:" + sclsControlInfo.Top / 10 + "; width:" + sclsControlInfo.Width / 10 + "; height:" + sclsControlInfo.Height / 10 + "'>";
+                        }
+                    }
                 //Needed since it is above with the button write code?
                 //if (sclsControlInfo.OnClick == "\"[Event Procedure]\"")
                 //    sstrPHP += " onclick='" + DropQuotes(sclsControlInfo.Name) + "_Click();'>";
-                sstrPHP += System.Environment.NewLine;
-                    
+                    sstrPHP += System.Environment.NewLine;                  
             }
 
 

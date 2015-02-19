@@ -71,6 +71,16 @@ namespace wfavbVBA2PHPone
         {
             get { return mintHeight; }
         }
+        private string mstrVisible;
+        public string Visible
+        {
+            get { return mstrVisible; }
+        }
+        private string mstrDefaultValue;
+        public string DefaultValue
+        {
+            get { return mstrDefaultValue; }
+        }
 
         //Ian,Alex - might need to add more properties here from Controls as needed - (was hoping mlstAttributes would give all attributes like these as needed but can't get working)
             //Ian,Alex will need to add code to set these properties below where commented
@@ -159,11 +169,19 @@ namespace wfavbVBA2PHPone
                     if (sstcAttr.Name == "Name") mstrName = sstcAttr.Value; //150216
                     if (sstcAttr.Name == "OnClick") mstrOnClick = sstcAttr.Value; 
                     if (sstcAttr.Name == "Caption") mstrCaption = sstcAttr.Value;
+                    if (sstcAttr.Name == "Visible") mstrVisible = sstcAttr.Value;
+                    if (sstcAttr.Name == "DefaultValue") mstrDefaultValue = sstcAttr.Value; 
                     if (sstcAttr.Name == "Left") mintLeft = Convert.ToInt32(sstcAttr.Value);
                     if (sstcAttr.Name == "Top") mintTop = Convert.ToInt32(sstcAttr.Value);
                     if (sstcAttr.Name == "Width") mintWidth = Convert.ToInt32(sstcAttr.Value);
                     if (sstcAttr.Name == "Height") mintHeight = Convert.ToInt32(sstcAttr.Value);
                     //Ian,Alex - this is where you'd set any new properties you've added, after adding above where comment indicates
+
+                    //Translate vauge attribute values to correct HTML values
+                    if (mstrVisible == " NotDefault")
+                    {
+                        mstrVisible = "hidden";
+                    }
 
 					if (sstcAttr.Name == "Name") {
 						pcolControlsByName.Add(this, sstcAttr.Value); //not used yet - I thought it would be needed but so far no
