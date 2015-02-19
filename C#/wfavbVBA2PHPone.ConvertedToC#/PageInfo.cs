@@ -150,13 +150,83 @@ namespace wfavbVBA2PHPone
                 if (sclsControlInfo.Name != null)
                     if (sclsControlInfo.BeginType == "CommandButton")
                     {
-                        sstrPHP += "    <input type='button' id=" + DropQuotes(sclsControlInfo.Name);
-                        sstrPHP += " value='" + DropQuotes(sclsControlInfo.Caption) + "'";
-                        sstrPHP += " style='position:absolute; left:" + sclsControlInfo.Left/10 + "; top:" + sclsControlInfo.Top/10 + "; width:" + sclsControlInfo.Width/10 + "; height:" + sclsControlInfo.Height/10 + "'";
+                            sstrPHP += "    <input type='button' id=" + DropQuotes(sclsControlInfo.Name);                                                    
+                            sstrPHP += " value='" + DropQuotes(sclsControlInfo.Caption) + "'";                     
+                            sstrPHP += " style='position:absolute; left:" + sclsControlInfo.Left / 10 + "; top:" + sclsControlInfo.Top / 10 + "; width:" + sclsControlInfo.Width / 10 + "; height:" + sclsControlInfo.Height / 10 + "'";                                              
                         if (sclsControlInfo.OnClick == "\"[Event Procedure]\"")
                             sstrPHP += " onclick='" + DropQuotes(sclsControlInfo.Name) + "_Click();'";
                         sstrPHP += ">" + System.Environment.NewLine;
                     }
+                if (sclsControlInfo.BeginType == "TextBox")
+                {
+                    if (sclsControlInfo.Name == null)
+                    {
+                        sstrPHP += "    <input type='text' id='empty'";
+                    }
+                    else
+                    {
+                        sstrPHP += "    <input type='text' id=" + DropQuotes(sclsControlInfo.Name);
+                    }
+                    //sstrPHP += "    <input type='button' id=" + DropQuotes(sclsControlInfo.Name);
+                    if (sclsControlInfo.Caption == null)
+                    {
+                        sstrPHP += " value='empty'";
+                    }
+                    else
+                    {
+                        sstrPHP += " value='" + DropQuotes(sclsControlInfo.Caption) + "'";
+                    }
+                    if (sclsControlInfo.Left == null && sclsControlInfo.Top == null && sclsControlInfo.Width == null && sclsControlInfo.Height == null)
+                    {
+                        sstrPHP += " style=''>";
+                    }
+                    else
+                    {
+                        sstrPHP += " style='position:absolute; left:" + sclsControlInfo.Left / 10 + "; top:" + sclsControlInfo.Top / 10 + "; width:" + sclsControlInfo.Width / 10 + "; height:" + sclsControlInfo.Height / 10 + "'>";
+                    }
+
+                }
+                if (sclsControlInfo.BeginType == "Label")
+                {
+                    if (sclsControlInfo.Name == null)
+                    {
+                        sstrPHP += "    <label id='empty'";
+                    }
+                    else
+                    {
+                        sstrPHP += "    <label id=" + DropQuotes(sclsControlInfo.Name);
+                    }
+                    //sstrPHP += "    <input type='button' id=" + DropQuotes(sclsControlInfo.Name);
+                    if (sclsControlInfo.Caption == null)
+                    {
+                        sstrPHP += " value='empty'";
+                    }
+                    else
+                    {
+                        sstrPHP += " value='" + DropQuotes(sclsControlInfo.Caption) + "'";
+                    }
+                    if (sclsControlInfo.Left == 0 && sclsControlInfo.Top == 0 && sclsControlInfo.Width == 0 && sclsControlInfo.Height == 0)
+                    {
+                        if (sclsControlInfo.Caption == null)
+                        {
+                            sstrPHP += " style=''></label>";
+                        }
+                        else
+                        {
+                            sstrPHP += " style=''>" + DropQuotes(sclsControlInfo.Caption) + "</label>";
+                        }
+                    }
+                    else
+                    {
+                        sstrPHP += " style='position:absolute; left:" + sclsControlInfo.Left / 10 + "; top:" + sclsControlInfo.Top / 10 + "; width:" + sclsControlInfo.Width / 10 + "; height:" + sclsControlInfo.Height / 10 + "'>" + DropQuotes(sclsControlInfo.Caption) + "</label>";
+                    }
+
+                }
+                //Needed since it is above with the button write code?
+                //if (sclsControlInfo.OnClick == "\"[Event Procedure]\"")
+                //    sstrPHP += " onclick='" + DropQuotes(sclsControlInfo.Name) + "_Click();'>";
+                sstrPHP += System.Environment.NewLine;
+                    
             }
 
 
@@ -203,14 +273,21 @@ namespace wfavbVBA2PHPone
         private string DropQuotes(string pstrString)
         {
             string sstrQuotesDropped = "";
-            if (pstrString.Substring(0, 1) == "'")
+            if (pstrString == null)
             {
-                if (pstrString.Substring(pstrString.Length-1, 1) == "'")
-                    return pstrString.Substring(1, pstrString.Length - 2);
+                return sstrQuotesDropped;
             }
-            else if (pstrString.Substring(0, 1) == "\"")
-                if (pstrString.Substring(pstrString.Length-1, 1) == "\"")
-                    return pstrString.Substring(1, pstrString.Length - 2);
+            else
+            {
+                if (pstrString.Substring(0, 1) == "'")
+                {
+                    if (pstrString.Substring(pstrString.Length - 1, 1) == "'")
+                        return pstrString.Substring(1, pstrString.Length - 2);
+                }
+                else if (pstrString.Substring(0, 1) == "\"")
+                    if (pstrString.Substring(pstrString.Length - 1, 1) == "\"")
+                        return pstrString.Substring(1, pstrString.Length - 2);
+            }
             return sstrQuotesDropped;
         }
 
