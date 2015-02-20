@@ -247,6 +247,20 @@ namespace wfavbVBA2PHPone
                             sstrPHP += " style='position:absolute; left:" + sclsControlInfo.Left / 10 + "; top:" + sclsControlInfo.Top / 10 + "; width:" + sclsControlInfo.Width / 10 + "; height:" + sclsControlInfo.Height / 10 + "'>";
                         }
                     }
+                    if (sclsControlInfo.BeginType == "OptionButton")
+                    {
+                        sstrPHP += "    <input type='radio'";
+
+                        if (sclsControlInfo.Left == null && sclsControlInfo.Top == null && sclsControlInfo.Width == null && sclsControlInfo.Height == null)
+                        {
+                            sstrPHP += " style=''>";
+                        }
+                        else
+                        {
+                            sstrPHP += " style='position:absolute; left:" + sclsControlInfo.Left / 10 + "; top:" + sclsControlInfo.Top / 10 + "; width:" + sclsControlInfo.Width / 10 + "; height:" + sclsControlInfo.Height / 10 + "'>";
+                        }
+                    }
+                    
                 //Needed since it is above with the button write code?
                 //if (sclsControlInfo.OnClick == "\"[Event Procedure]\"")
                 //    sstrPHP += " onclick='" + DropQuotes(sclsControlInfo.Name) + "_Click();'>";

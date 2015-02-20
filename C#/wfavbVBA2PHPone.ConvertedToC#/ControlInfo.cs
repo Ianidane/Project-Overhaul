@@ -81,6 +81,11 @@ namespace wfavbVBA2PHPone
         {
             get { return mstrDefaultValue; }
         }
+        private int mintSpecialEffect;
+        public int SpecialEffect
+        {
+            get { return mintSpecialEffect; }
+        }
 
         //Ian,Alex - might need to add more properties here from Controls as needed - (was hoping mlstAttributes would give all attributes like these as needed but can't get working)
             //Ian,Alex will need to add code to set these properties below where commented
@@ -175,6 +180,7 @@ namespace wfavbVBA2PHPone
                     if (sstcAttr.Name == "Top") mintTop = Convert.ToInt32(sstcAttr.Value);
                     if (sstcAttr.Name == "Width") mintWidth = Convert.ToInt32(sstcAttr.Value);
                     if (sstcAttr.Name == "Height") mintHeight = Convert.ToInt32(sstcAttr.Value);
+                    if (sstcAttr.Name == "SpecialEffect") mintSpecialEffect = Convert.ToInt32(sstcAttr.Value);
                     //Ian,Alex - this is where you'd set any new properties you've added, after adding above where comment indicates
 
                     //Translate vauge attribute values to correct HTML values
