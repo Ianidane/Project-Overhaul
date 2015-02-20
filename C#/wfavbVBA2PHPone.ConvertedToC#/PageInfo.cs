@@ -260,7 +260,7 @@ namespace wfavbVBA2PHPone
                             sstrPHP += " style='position:absolute; left:" + sclsControlInfo.Left / 10 + "; top:" + sclsControlInfo.Top / 10 + "; width:" + sclsControlInfo.Width / 10 + "; height:" + sclsControlInfo.Height / 10 + "'>";
                         }
                     }
-                    if (sclsControlInfo.BeginType == "ListBox")
+                    if (sclsControlInfo.BeginType == "ListBox" || sclsControlInfo.BeginType == "ComboBox")
                     {
                         sstrPHP += "    <select name='";
                         
@@ -292,6 +292,8 @@ namespace wfavbVBA2PHPone
                         sstrPHP += ">" + System.Environment.NewLine;
 
                     }
+
+                   
                 //Needed since it is above with the button write code?
                 //if (sclsControlInfo.OnClick == "\"[Event Procedure]\"")
                 //    sstrPHP += " onclick='" + DropQuotes(sclsControlInfo.Name) + "_Click();'>";
