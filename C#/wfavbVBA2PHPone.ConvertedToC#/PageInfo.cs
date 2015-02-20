@@ -273,6 +273,10 @@ namespace wfavbVBA2PHPone
                             sstrPHP += "" + DropQuotes(sclsControlInfo.Name) + "'";
                         }
 
+                        if (sclsControlInfo.TabIndex != 0)
+                        {
+                            sstrPHP += " Size='" + sclsControlInfo.TabIndex + "'";
+                        }
 
                         if (sclsControlInfo.Left == null && sclsControlInfo.Top == null && sclsControlInfo.Width == null && sclsControlInfo.Height == null)
                         {
