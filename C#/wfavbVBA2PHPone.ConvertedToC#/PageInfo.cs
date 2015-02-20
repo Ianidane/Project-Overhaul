@@ -260,7 +260,34 @@ namespace wfavbVBA2PHPone
                             sstrPHP += " style='position:absolute; left:" + sclsControlInfo.Left / 10 + "; top:" + sclsControlInfo.Top / 10 + "; width:" + sclsControlInfo.Width / 10 + "; height:" + sclsControlInfo.Height / 10 + "'>";
                         }
                     }
-                    
+                    if (sclsControlInfo.BeginType == "ListBox")
+                    {
+                        sstrPHP += "    <select name='";
+                        
+                        if (sclsControlInfo.Name == null)
+                        {
+                            sstrPHP += "empty'";
+                        }
+                        else
+                        {
+                            sstrPHP += "" + DropQuotes(sclsControlInfo.Name) + "'";
+                        }
+
+
+                        if (sclsControlInfo.Left == null && sclsControlInfo.Top == null && sclsControlInfo.Width == null && sclsControlInfo.Height == null)
+                        {
+                            sstrPHP += " style=''";
+                        }
+                        else
+                        {
+                            sstrPHP += " style='position:absolute; left:" + sclsControlInfo.Left / 10 + "; top:" + sclsControlInfo.Top / 10 + "; width:" + sclsControlInfo.Width / 10 + "; height:" + sclsControlInfo.Height / 10 + "'";
+                        }
+
+                        if (sclsControlInfo.OnClick == "\"[Event Procedure]\"")
+                            sstrPHP += " onclick='" + DropQuotes(sclsControlInfo.Name) + "_Click();'";
+                        sstrPHP += ">" + System.Environment.NewLine;
+
+                    }
                 //Needed since it is above with the button write code?
                 //if (sclsControlInfo.OnClick == "\"[Event Procedure]\"")
                 //    sstrPHP += " onclick='" + DropQuotes(sclsControlInfo.Name) + "_Click();'>";
