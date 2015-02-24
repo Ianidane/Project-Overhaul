@@ -260,6 +260,39 @@ namespace wfavbVBA2PHPone
                             sstrPHP += " style='position:absolute; left:" + sclsControlInfo.Left / 10 + "; top:" + sclsControlInfo.Top / 10 + "; width:" + sclsControlInfo.Width / 10 + "; height:" + sclsControlInfo.Height / 10 + "'>";
                         }
                     }
+
+                    if (sclsControlInfo.BeginType == "ToggleButton") // I quite possibly may have used the wrong html for this one, I used a regular button. Couldnt find a toggleable button in html closest I think is a radiobutton but that requires a label next to it
+                    {
+                        sstrPHP += "    <button name='";
+
+                        if (sclsControlInfo.Name == null)
+                        {
+                            sstrPHP += "empty'";
+                        }
+                        else
+                        {
+                            sstrPHP += "" + DropQuotes(sclsControlInfo.Name) + "'";
+                        }
+
+                        sstrPHP += " type='submit'";
+
+                        if (sclsControlInfo.Left == null && sclsControlInfo.Top == null && sclsControlInfo.Width == null && sclsControlInfo.Height == null)
+                        {
+                            sstrPHP += " style=''>";
+                        }
+                        else
+                        {
+                            sstrPHP += " style='position:absolute; left:" + sclsControlInfo.Left / 10 + "; top:" + sclsControlInfo.Top / 10 + "; width:" + sclsControlInfo.Width / 10 + "; height:" + sclsControlInfo.Height / 10 + "'";
+                        }
+
+                        if (sclsControlInfo.OnClick == "\"[Event Procedure]\"")
+                            sstrPHP += " onclick='" + DropQuotes(sclsControlInfo.Name) + "_Click();'";
+                        sstrPHP += ">";
+
+                        sstrPHP += sclsControlInfo.Caption;
+                        sstrPHP += "</button>";
+                    }
+                    
                     if (sclsControlInfo.BeginType == "ListBox" || sclsControlInfo.BeginType == "ComboBox")
                     {
                         sstrPHP += "    <select name='";
