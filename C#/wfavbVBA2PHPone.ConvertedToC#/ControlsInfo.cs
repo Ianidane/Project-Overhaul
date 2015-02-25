@@ -11,11 +11,11 @@ using System.Xml.Linq;
 using System.Threading.Tasks;
 namespace wfavbVBA2PHPone
 {
-	public class ControlsInfo
-	{
-		public ControlsInfo()
-		{
-		}
+    public class ControlsInfo
+    {
+        public ControlsInfo()
+        {
+        }
 
         private Collection mcolControlsByName = new Collection();
         public Collection ControlsByName
@@ -29,15 +29,15 @@ namespace wfavbVBA2PHPone
             get { return mcolAllControls; }
         }
 
-		public ControlInfo GetControlsInfo(string pstrSource, ref int plonProcessLocation)
-		{
+        public ControlInfo GetControlsInfo(string pstrSource, ref int plonProcessLocation)
+        {
             int slonNestDepth = 0;
-			slonNestDepth = 0;
+            slonNestDepth = 0;
 
-			ControlInfo sclsControlInfo = null;
+            ControlInfo sclsControlInfo = null;
             sclsControlInfo = new ControlInfo(pstrSource, ref plonProcessLocation, ref slonNestDepth, ref mcolAllControls, ref mcolControlsByName); //not sure slstAllControls is being used
 
-			return sclsControlInfo;
-		}
-	}
+            return sclsControlInfo;
+        }
+    }
 }

@@ -27,18 +27,18 @@ namespace wfavbVBA2PHPone
 
             slstAllPages.Add(sclsPageInfo);
             slstAllPageNames.Add(sclsPageInfo.Name);
-//            foreach (string sstrPagesOpenForm_loopVariable in sclsPageInfo.OpenFormNames)
+            //            foreach (string sstrPagesOpenForm_loopVariable in sclsPageInfo.OpenFormNames)
             foreach (string sstrEachPagesOpenForm in sclsPageInfo.OpenFormNames)
             {
-//                sstrPagesOpenForm = sstrPagesOpenForm_loopVariable;
-//                if (!slstAllPageNames.Contains(sstrPagesOpenForm, StringComparer.OrdinalIgnoreCase))
-//                if (!slstAllPageNames.Contains(sstrEachPagesOpenForm, StringComparer.OrdinalIgnoreCase))
-//                if (!slstAllPageNames.Contains("Form_" + sstrEachPagesOpenForm, StringComparer.OrdinalIgnoreCase))
+                //                sstrPagesOpenForm = sstrPagesOpenForm_loopVariable;
+                //                if (!slstAllPageNames.Contains(sstrPagesOpenForm, StringComparer.OrdinalIgnoreCase))
+                //                if (!slstAllPageNames.Contains(sstrEachPagesOpenForm, StringComparer.OrdinalIgnoreCase))
+                //                if (!slstAllPageNames.Contains("Form_" + sstrEachPagesOpenForm, StringComparer.OrdinalIgnoreCase))
                 if (!slstAllPageNames.Contains("Form_" + sstrEachPagesOpenForm + ".txt", StringComparer.OrdinalIgnoreCase))
                 {
-//                    slstUnprocessPageNames.Add(sstrPagesOpenForm);
-//                    slstUnprocessPageNames.Add(sstrEachPagesOpenForm);
-//                    slstUnprocessPageNames.Add("Form_" + sstrEachPagesOpenForm);
+                    //                    slstUnprocessPageNames.Add(sstrPagesOpenForm);
+                    //                    slstUnprocessPageNames.Add(sstrEachPagesOpenForm);
+                    //                    slstUnprocessPageNames.Add("Form_" + sstrEachPagesOpenForm);
                     slstUnprocessPageNames.Add("Form_" + sstrEachPagesOpenForm + ".txt");
                 }
             }
@@ -47,8 +47,8 @@ namespace wfavbVBA2PHPone
             int slonTempPagesProcess = 0;
             while (slstUnprocessPageNames.Count > 0 & slonTempPagesProcess < 9999)
             {
-//                sclsPageInfo = new PageInfo("C:\\VBA2PHP\\ProIRB_Text\\Form_" + slstUnprocessPageNames[0] + ".txt");
-//                sclsPageInfo = new PageInfo("C:\\VBA2PHP\\ProIRB_Text\\" + slstUnprocessPageNames[0] + ".txt");
+                //                sclsPageInfo = new PageInfo("C:\\VBA2PHP\\ProIRB_Text\\Form_" + slstUnprocessPageNames[0] + ".txt");
+                //                sclsPageInfo = new PageInfo("C:\\VBA2PHP\\ProIRB_Text\\" + slstUnprocessPageNames[0] + ".txt");
                 sclsPageInfo = new PageInfo("C:\\VBA2PHP\\ProIRB_Text\\" + slstUnprocessPageNames[0]);
                 sclsPageInfo.WritePHPPage("C:\\VBA2PHP\\ProIRB_PHP\\", sbolBackupExistingPHPPages);
 
@@ -56,17 +56,17 @@ namespace wfavbVBA2PHPone
 
                 slstAllPages.Add(sclsPageInfo);
                 slstAllPageNames.Add(sclsPageInfo.Name);
-//                foreach (string sstrPagesOpenForm_loopVariable in sclsPageInfo.OpenFormNames)
+                //                foreach (string sstrPagesOpenForm_loopVariable in sclsPageInfo.OpenFormNames)
                 foreach (string sstrEachPagesOpenForm in sclsPageInfo.OpenFormNames)
                 {
-//                    sstrPagesOpenForm = sstrPagesOpenForm_loopVariable;
-//                    if (!slstAllPageNames.Contains(sstrPagesOpenForm, StringComparer.OrdinalIgnoreCase))
-//150218                    if (!slstAllPageNames.Contains(sstrEachPagesOpenForm, StringComparer.OrdinalIgnoreCase))
-//                    if (!slstAllPageNames.Contains("Form_" + sstrEachPagesOpenForm, StringComparer.OrdinalIgnoreCase))
+                    //                    sstrPagesOpenForm = sstrPagesOpenForm_loopVariable;
+                    //                    if (!slstAllPageNames.Contains(sstrPagesOpenForm, StringComparer.OrdinalIgnoreCase))
+                    //150218                    if (!slstAllPageNames.Contains(sstrEachPagesOpenForm, StringComparer.OrdinalIgnoreCase))
+                    //                    if (!slstAllPageNames.Contains("Form_" + sstrEachPagesOpenForm, StringComparer.OrdinalIgnoreCase))
                     if (!slstAllPageNames.Contains("Form_" + sstrEachPagesOpenForm + ".txt", StringComparer.OrdinalIgnoreCase))
                     {
-//                        slstUnprocessPageNames.Add(sstrPagesOpenForm);
-//                        slstUnprocessPageNames.Add(sstrEachPagesOpenForm);
+                        //                        slstUnprocessPageNames.Add(sstrPagesOpenForm);
+                        //                        slstUnprocessPageNames.Add(sstrEachPagesOpenForm);
                         if (!slstUnprocessPageNames.Contains("Form_" + sstrEachPagesOpenForm + ".txt", StringComparer.OrdinalIgnoreCase))
                         {
                             if (sstrEachPagesOpenForm == "")
@@ -86,7 +86,7 @@ namespace wfavbVBA2PHPone
             InitializeComponent();
         }
 
-//        public string sstrPagesOpenForm { get; set; }
+        //        public string sstrPagesOpenForm { get; set; }
 
     }
 }
