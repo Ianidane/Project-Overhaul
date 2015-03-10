@@ -62,7 +62,7 @@ namespace wfavbVBA2PHPone
             mlstFunctions = mclsFunctionsInfo.Functions; //used in WritePHPPage function below
             mlstOpenFormNames = mclsFunctionsInfo.OpenFormNames; //used in WritePHPPage function below
         }
-
+        //git test 2
         private string OpenFile(string pstrFilePathAndName)
         {
             string functionReturnValue = null;
