@@ -89,7 +89,7 @@ namespace wfavbVBA2PHPone
                     //When you first open a form, the following events occur in this order:Open Þ Load Þ Resize Þ Activate Þ Current
                     //If you Then 're trying to decide whether to use the Open or Load event for your macro or event procedure, one significant difference is that the Open event can be canceled, but the Load event can't. For example, if you're dynamically building a record source for a form in an event procedure for the Form 's Open event, you can cancel opening the form if there are no records to display.
                     //When you close a form, the following events occur in this order:Unload Þ Deactivate Þ Close
-                    if (Strings.LCase(sclsFunctionInfo.Name) == "form_open")
+                    if (sclsFunctionInfo.Name.ToLower() == "form_open")
                     {
                         mbolHasFormOpen = true;
                     }

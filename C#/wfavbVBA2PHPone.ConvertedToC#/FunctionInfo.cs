@@ -92,6 +92,8 @@ namespace wfavbVBA2PHPone
             plonProcessLocation++; //step over "("
 
             mstrFunctionTranslated += "function " + mstrFunctionName + "(";
+            if (mstrFunctionName == "QuickStudyNumber_KeyDown")
+    MessageBox.Show("hit");
             string sstrComma = "";
             while (!(pstrSource.Substring(plonProcessLocation, 1) == ")"))
             {
@@ -192,9 +194,9 @@ namespace wfavbVBA2PHPone
         {
             string sstrTranslatedWord = "";
 
-            //find next word
-            if (!(plonProcessLocation + 14 < pstrSource.Length)) //would prefer SafeSubString - 14 is longest Reserve word so far
-                return "";
+//            //find next word
+//            if (!(plonProcessLocation + 14 < pstrSource.Length)) //would prefer SafeSubString - 14 is longest Reserve word so far
+//                return "";
 
             //skip any spaces or CrLf
             while (pstrSource.Substring(plonProcessLocation, 1) == " " | pstrSource.Substring(plonProcessLocation, 2) == System.Environment.NewLine)
