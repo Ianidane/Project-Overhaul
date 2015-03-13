@@ -10,6 +10,10 @@ using System.Linq;
 using System.Xml.Linq;
 using System.Threading.Tasks;
 
+//Git Test
+
+
+//Alex's git test
 namespace wfavbVBA2PHPone
 {
     public class PageInfo
@@ -60,7 +64,7 @@ namespace wfavbVBA2PHPone
             mlstFunctions = mclsFunctionsInfo.Functions; //used in WritePHPPage function below
             mlstOpenFormNames = mclsFunctionsInfo.OpenFormNames; //used in WritePHPPage function below
         }
-
+        //git test 2
         private string OpenFile(string pstrFilePathAndName)
         {
             string functionReturnValue = null;
@@ -206,16 +210,16 @@ namespace wfavbVBA2PHPone
                     {
                         if (sclsControlInfo.Caption == null)
                         {
-                            sstrPHP += " style='visibility:" + sclsControlInfo.Visible + ";'></label>";
+                            sstrPHP += " style='visibility:" + sclsControlInfo.Visible + "'></label>";
                         }
                         else
                         {
-                            sstrPHP += " style='visibility:" + sclsControlInfo.Visible + ";'>" + DropQuotes(sclsControlInfo.Caption) + "</label>";
+                            sstrPHP += " style='visibility:" + sclsControlInfo.Visible + "'>" + DropQuotes(sclsControlInfo.Caption) + "</label>";
                         }
                     }
                     else
                     {
-                        sstrPHP += " style='position:absolute; left:" + sclsControlInfo.Left / 10 + "; top:" + sclsControlInfo.Top / 10 + "; width:" + sclsControlInfo.Width / 10 + "; height:" + sclsControlInfo.Height / 10 + "; visibility:" + sclsControlInfo.Visible + ";'>" + DropQuotes(sclsControlInfo.Caption) + "</label>";
+                        sstrPHP += " style='position:absolute; left:" + sclsControlInfo.Left / 10 + "; top:" + sclsControlInfo.Top / 10 + "; width:" + sclsControlInfo.Width / 10 + "; height:" + sclsControlInfo.Height / 10 + "; visibility:" + sclsControlInfo.Visible + "'>" + DropQuotes(sclsControlInfo.Caption) + "</label>";
                     }
                 }
                 if (sclsControlInfo.BeginType == "CheckBox")
