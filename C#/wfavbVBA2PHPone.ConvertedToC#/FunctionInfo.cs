@@ -92,11 +92,10 @@ namespace wfavbVBA2PHPone
             plonProcessLocation++; //step over "("
 
             mstrFunctionTranslated += "function " + mstrFunctionName + "(";
-            if (mstrFunctionName == "QuickStudyNumber_KeyDown")
-    MessageBox.Show("hit");
             string sstrComma = "";
             while (!(pstrSource.Substring(plonProcessLocation, 1) == ")"))
             {
+                while (pstrSource.Substring(plonProcessLocation, 1) == " ") plonProcessLocation++;
                 int sintStartParmPos = plonProcessLocation;
                 while (!(pstrSource.Substring(plonProcessLocation, 1) == " " | pstrSource.Substring(plonProcessLocation, 1) == "," | pstrSource.Substring(plonProcessLocation, 1) == ")" | plonProcessLocation >= pstrSource.Length)) plonProcessLocation++; //find space, "," or ) - end of Parm Name
                 mstrFunctionTranslated += sstrComma + pstrSource.Substring(sintStartParmPos, plonProcessLocation - sintStartParmPos);
