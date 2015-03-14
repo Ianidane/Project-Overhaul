@@ -212,44 +212,52 @@ namespace wfavbVBA2PHPone
 
             string sstrWord = pstrSource.Substring(slonWordStartPos, plonProcessLocation - slonWordStartPos);
 
-            //Reserve words first - and if not one of those then variable or function
-            //I'm thinking sort by longer to shorter so doens't find a shorter reserve within a longer one
-            //want to get SafeSubString working for switch below https://sharpsnippets.wordpress.com/2014/01/25/safe-substring/
-            switch (sstrWord)
-            {
-                case "'": //insert // before ' and then run to end of line
-                    int sintStartCommentPos = plonProcessLocation;
-                    while (!(pstrSource.Substring(plonProcessLocation, 2) == System.Environment.NewLine | plonProcessLocation >= pstrSource.Length)) plonProcessLocation++; //find CrLf
-                    plonProcessLocation += 2; //skip over vbcrlf 
-                    sstrTranslatedWord += "//'" + pstrSource.Substring(sintStartCommentPos, plonProcessLocation - sintStartCommentPos);
-                    break;
+            if (sstrWord.Substring(0,1) == "'"){ //insert // before ' and then run to end of line
+                int sintStartCommentPos = plonProcessLocation;
+                while (!(pstrSource.Substring(plonProcessLocation, 2) == System.Environment.NewLine | plonProcessLocation >= pstrSource.Length)) plonProcessLocation++; //find CrLf
+                plonProcessLocation += 2; //skip over vbcrlf 
+                sstrTranslatedWord += "//" +sstrWord + pstrSource.Substring(sintStartCommentPos, plonProcessLocation - sintStartCommentPos);
+            }
+            else{
+                //Reserve words first - and if not one of those then variable or function
+                //I'm thinking sort by longer to shorter so doens't find a shorter reserve within a longer one
+                //want to get SafeSubString working for switch below https://sharpsnippets.wordpress.com/2014/01/25/safe-substring/
+                switch (sstrWord)
+                {
+    //                case "'": //insert // before ' and then run to end of line
+    //                    int sintStartCommentPos = plonProcessLocation;
+    //                    while (!(pstrSource.Substring(plonProcessLocation, 2) == System.Environment.NewLine | plonProcessLocation >= pstrSource.Length)) plonProcessLocation++; //find CrLf
+    //                    plonProcessLocation += 2; //skip over vbcrlf 
+    //                    sstrTranslatedWord += "//'" + pstrSource.Substring(sintStartCommentPos, plonProcessLocation - sintStartCommentPos);
+    //                    break;
 
-                case "Dim":
+                    case "Dim":
 
-                    break;
+                        break;
 
-                case "DoCmd.OpenForm":
-                    //**found DoCmd.OpenForm
-                    //                    plonProcessLocation += 14; //step over "DoCmd.OpenForm"
-                    plonProcessLocation++; //step over space after DoCmd.OpenForm
-                    string sstrClosingChar = ""; //used to find the end of the OpenForm name
-                    if (pstrSource.Substring(plonProcessLocation, 1) == "'") sstrClosingChar = "'";
-                    else if (pstrSource.Substring(plonProcessLocation, 1) == "\"") sstrClosingChar = "\"";
-                    plonProcessLocation++;//step over open quote
-                    int slonStartOpenFormNamePos = plonProcessLocation;
-                    //find end of OpenForm name
-                    while (!(pstrSource.Substring(plonProcessLocation, sstrClosingChar.Length) == sstrClosingChar | plonProcessLocation >= pstrSource.Length)) plonProcessLocation++;
-                    mlstOpenFormNames.Add(pstrSource.Substring(slonStartOpenFormNamePos, plonProcessLocation - slonStartOpenFormNamePos));
-                    mlonNumOpenFormNames++;
-                    sstrTranslatedWord += "        location.href = \"Form_" + pstrSource.Substring(slonStartOpenFormNamePos, plonProcessLocation - slonStartOpenFormNamePos) + ".php\";" + System.Environment.NewLine;
-                    plonProcessLocation++; //step over sstrClosingChar
+                    case "DoCmd.OpenForm":
+                        //**found DoCmd.OpenForm
+                        //                    plonProcessLocation += 14; //step over "DoCmd.OpenForm"
+                        plonProcessLocation++; //step over space after DoCmd.OpenForm
+                        string sstrClosingChar = ""; //used to find the end of the OpenForm name
+                        if (pstrSource.Substring(plonProcessLocation, 1) == "'") sstrClosingChar = "'";
+                        else if (pstrSource.Substring(plonProcessLocation, 1) == "\"") sstrClosingChar = "\"";
+                        plonProcessLocation++;//step over open quote
+                        int slonStartOpenFormNamePos = plonProcessLocation;
+                        //find end of OpenForm name
+                        while (!(pstrSource.Substring(plonProcessLocation, sstrClosingChar.Length) == sstrClosingChar | plonProcessLocation >= pstrSource.Length)) plonProcessLocation++;
+                        mlstOpenFormNames.Add(pstrSource.Substring(slonStartOpenFormNamePos, plonProcessLocation - slonStartOpenFormNamePos));
+                        mlonNumOpenFormNames++;
+                        sstrTranslatedWord += "        location.href = \"Form_" + pstrSource.Substring(slonStartOpenFormNamePos, plonProcessLocation - slonStartOpenFormNamePos) + ".php\";" + System.Environment.NewLine;
+                        plonProcessLocation++; //step over sstrClosingChar
 
-                    break;
+                        break;
 
-                default:
-                    //must be Variable or Function
-                    //NEED VARIABLE AND FUNCTION CODE HERE
-                    break;
+                    default:
+                        //must be Variable or Function
+                        //NEED VARIABLE AND FUNCTION CODE HERE
+                        break;
+                }
             }
             return sstrTranslatedWord;
         }
