@@ -219,7 +219,15 @@ namespace wfavbVBA2PHPone
                     }
                     else
                     {
-                        sstrPHP += " style='position:absolute; left:" + sclsControlInfo.Left / 10 + "; top:" + sclsControlInfo.Top / 10 + "; width:" + sclsControlInfo.Width / 10 + "; height:" + sclsControlInfo.Height / 10 + "; visibility:" + sclsControlInfo.Visible + "'>" + DropQuotes(sclsControlInfo.Caption) + "</label>";
+                        if (sclsControlInfo.Caption == null)
+                        {
+                            sstrPHP += " style='visibility:" + sclsControlInfo.Visible + "'></label>";
+                        }
+                        else
+                        {
+                            sstrPHP += " style='position:absolute; left:" + sclsControlInfo.Left / 10 + "; top:" + sclsControlInfo.Top / 10 + "; width:" + sclsControlInfo.Width / 10 + "; height:" + sclsControlInfo.Height / 10 + "; visibility:" + sclsControlInfo.Visible + "'>" + DropQuotes(sclsControlInfo.Caption) + "</label>";
+                        }
+                        
                     }
                 }
                 if (sclsControlInfo.BeginType == "CheckBox")
