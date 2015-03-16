@@ -34,12 +34,14 @@ namespace wfavbVBA2PHPone
         {
             get { return mlstOpenFormNames; }
         }
-
         private long mlonNumOpenFormNames;
         public long NumOpenFormNames
         {
             get { return mlonNumOpenFormNames; }
         }
+        private Dictionary<string, List<string>> mdicSubVariableValues4OpenForms = new Dictionary<string,List<string>>();//150315
+
+        private List<string> mlstSubVariables = new List<string>();//150314
 
         private string mstrFunctionTranslated = "";
         public string FunctionTranslated
@@ -110,59 +112,12 @@ namespace wfavbVBA2PHPone
                     MessageBox.Show("Parameter without Type");
             }
             plonProcessLocation++; //step over ")"
-            mstrFunctionTranslated += "){" + System.Environment.NewLine;
+            mstrFunctionTranslated += "){";
+            if (pstrSource.Substring(plonProcessLocation, 2) == System.Environment.NewLine) mstrFunctionTranslated += System.Environment.NewLine;
 
             //loop through rest of the function and find needed items
             while (!(pstrSource.Substring(plonProcessLocation, EndFunctionType.Length) == EndFunctionType | plonProcessLocation >= pstrSource.Length))
             {
-                //150218 handle comments in TranslateNextWord
-                //				//if its a comment then skip it
-                //				while (!(pstrSource.Substring(plonProcessLocation, 1) != "'")) {
-                //                    while (!(pstrSource.Substring(plonProcessLocation, 2) == System.Environment.NewLine | plonProcessLocation >= pstrSource.Length)) plonProcessLocation++;
-                //					plonProcessLocation++;//skip over vbcrlf 
-                //				}
-
-                //if (plonProcessLocation + 14 < pstrSource.Length) //would like SafeSubString working - but till it does need to make sure that there is enough string left to check 14 characters
-                //if (pstrSource.Substring(plonProcessLocation, 14) == "DoCmd.OpenForm"){
-                //    //**found DoCmd.OpenForm
-                //    plonProcessLocation = plonProcessLocation + 14; //step over "DoCmd.OpenForm"
-                //    plonProcessLocation = plonProcessLocation + 1; //step over space after DoCmd.OpenForm
-                //    //get OpenForm being name
-                //    //used to find the end of the OpenForm name
-                //    string sstrClosingChar = "";
-                //    if (pstrSource.Substring(plonProcessLocation, 1) == "'")
-                //    {
-                //        sstrClosingChar = "'";
-                //    }
-                //    else if (pstrSource.Substring(plonProcessLocation, 1) == "\"")
-                //    {
-                //        sstrClosingChar = "\"";
-                //    }
-                //    plonProcessLocation = plonProcessLocation + 1;//step over open quote
-                //    int slonStartOpenFormNamePos = plonProcessLocation;
-                //    //find end of OpenForm name
-                //    while (!(pstrSource.Substring(plonProcessLocation, sstrClosingChar.Length) == sstrClosingChar | plonProcessLocation >= pstrSource.Length))
-                //    {
-                //        plonProcessLocation = plonProcessLocation + 1;
-                //    }
-                //    //set length of OpenFormName
-                //    int slonOpenFormNameLength = plonProcessLocation - slonStartOpenFormNamePos;
-
-                //    mlstOpenFormNames.Add(pstrSource.Substring(slonStartOpenFormNamePos, slonOpenFormNameLength));
-                //    mlonNumOpenFormNames = mlonNumOpenFormNames + 1;
-
-
-
-                //I'm think this is where the bulk of the coding need to be done
-                //This if I think need to be replaced with a check for each word of code in sequence and translate it from VBA to PHP
-
-
-
-                //}
-                //plonProcessLocation = plonProcessLocation + 1; //next character
-
-
-
                 mstrFunctionTranslated += TranslateNextWord(pstrSource, ref plonProcessLocation);
 
                 //skip over any spaces or CrLf - also put any space or CrLf into mstrFunctionTranslated
@@ -175,15 +130,13 @@ namespace wfavbVBA2PHPone
                     }
                     else if (pstrSource.Substring(plonProcessLocation, 2) == System.Environment.NewLine)
                     {
-                        mstrFunctionTranslated += System.Environment.NewLine;
+                        mstrFunctionTranslated += ";" + System.Environment.NewLine;
                         plonProcessLocation += 2;
                     }
                 }
             }
 
-
             mstrFunctionTranslated += "}" + System.Environment.NewLine; //close function
-
 
             plonProcessLocation = plonProcessLocation + EndFunctionType.Length; //step over End Sub or End Function
             return sbolFoundFunction;
@@ -201,9 +154,15 @@ namespace wfavbVBA2PHPone
             while (pstrSource.Substring(plonProcessLocation, 1) == " " | pstrSource.Substring(plonProcessLocation, 2) == System.Environment.NewLine)
             {
                 if (pstrSource.Substring(plonProcessLocation, 1) == " ")
+                {
+                    mstrFunctionTranslated += " ";
                     plonProcessLocation++;
+                }
                 else if (pstrSource.Substring(plonProcessLocation, 2) == System.Environment.NewLine)
+                {
+                    mstrFunctionTranslated += ";" + System.Environment.NewLine;
                     plonProcessLocation += 2;
+                }
             }
             int slonWordStartPos = plonProcessLocation;
 
@@ -212,7 +171,7 @@ namespace wfavbVBA2PHPone
 
             string sstrWord = pstrSource.Substring(slonWordStartPos, plonProcessLocation - slonWordStartPos);
 
-            if (sstrWord.Substring(0,1) == "'"){ //insert // before ' and then run to end of line
+            if (sstrWord.Substring(0,1) == "'"){ //insert // before ' and then run to end of line - this can't be in the switch below because its checking the first character of sstrWord only
                 int sintStartCommentPos = plonProcessLocation;
                 while (!(pstrSource.Substring(plonProcessLocation, 2) == System.Environment.NewLine | plonProcessLocation >= pstrSource.Length)) plonProcessLocation++; //find CrLf
                 plonProcessLocation += 2; //skip over vbcrlf 
@@ -231,7 +190,22 @@ namespace wfavbVBA2PHPone
     //                    sstrTranslatedWord += "//'" + pstrSource.Substring(sintStartCommentPos, plonProcessLocation - sintStartCommentPos);
     //                    break;
 
+                    case "=": //this should never be called for an = that is within an if, do while, do until... - only for actual assignments, not evaluations
+                        sstrTranslatedWord += sstrWord;
+
+                        break;
+
                     case "Dim":
+                        plonProcessLocation++; //step over space after Dim
+                        int slonStartOpenVarNamePos = plonProcessLocation;
+                        //find end of VarName
+                        while (!(pstrSource.Substring(plonProcessLocation, 1) == " " | pstrSource.Substring(plonProcessLocation, 2) == System.Environment.NewLine | plonProcessLocation >= pstrSource.Length)) plonProcessLocation++;
+                        string sstrVarName = pstrSource.Substring(slonStartOpenVarNamePos, plonProcessLocation - slonStartOpenVarNamePos);
+                        mlstSubVariables.Add(sstrVarName);
+                        sstrTranslatedWord += "//could initialize " + sstrVarName + " here" + System.Environment.NewLine;
+                        //not using variable type - skipping it below
+                        while (!(pstrSource.Substring(plonProcessLocation, 2) == System.Environment.NewLine | plonProcessLocation >= pstrSource.Length)) plonProcessLocation++;
+                        plonProcessLocation += 2; //skip over vbcrlf 
 
                         break;
 
@@ -239,23 +213,108 @@ namespace wfavbVBA2PHPone
                         //**found DoCmd.OpenForm
                         //                    plonProcessLocation += 14; //step over "DoCmd.OpenForm"
                         plonProcessLocation++; //step over space after DoCmd.OpenForm
-                        string sstrClosingChar = ""; //used to find the end of the OpenForm name
-                        if (pstrSource.Substring(plonProcessLocation, 1) == "'") sstrClosingChar = "'";
-                        else if (pstrSource.Substring(plonProcessLocation, 1) == "\"") sstrClosingChar = "\"";
-                        plonProcessLocation++;//step over open quote
-                        int slonStartOpenFormNamePos = plonProcessLocation;
-                        //find end of OpenForm name
-                        while (!(pstrSource.Substring(plonProcessLocation, sstrClosingChar.Length) == sstrClosingChar | plonProcessLocation >= pstrSource.Length)) plonProcessLocation++;
-                        mlstOpenFormNames.Add(pstrSource.Substring(slonStartOpenFormNamePos, plonProcessLocation - slonStartOpenFormNamePos));
-                        mlonNumOpenFormNames++;
-                        sstrTranslatedWord += "        location.href = \"Form_" + pstrSource.Substring(slonStartOpenFormNamePos, plonProcessLocation - slonStartOpenFormNamePos) + ".php\";" + System.Environment.NewLine;
-                        plonProcessLocation++; //step over sstrClosingChar
+                        if (pstrSource.Substring(plonProcessLocation, 1) == "'" | pstrSource.Substring(plonProcessLocation, 1) == "\"")
+                        {
+                            //OpenFormName starts with quote so its a constant
+                            string sstrClosingChar = ""; //used to find the end of the OpenForm name
+                            if (pstrSource.Substring(plonProcessLocation, 1) == "'") sstrClosingChar = "'";
+                            else if (pstrSource.Substring(plonProcessLocation, 1) == "\"") sstrClosingChar = "\"";
+                            plonProcessLocation++;//step over open quote
+                            int slonStartOpenFormNamePos = plonProcessLocation;
+                            //find end of OpenForm name
+                            while (!(pstrSource.Substring(plonProcessLocation, sstrClosingChar.Length) == sstrClosingChar | plonProcessLocation >= pstrSource.Length)) plonProcessLocation++;
+                            mlstOpenFormNames.Add(pstrSource.Substring(slonStartOpenFormNamePos, plonProcessLocation - slonStartOpenFormNamePos));
+                            mlonNumOpenFormNames++;
+                            sstrTranslatedWord += "location.href = \"Form_" + pstrSource.Substring(slonStartOpenFormNamePos, plonProcessLocation - slonStartOpenFormNamePos) + ".php\";";
+                            plonProcessLocation++; //step over sstrClosingChar
+                        }
+                        else
+                        {
+                            //OpenformName does not start with quote so its a variable
+                            int slonStartOpenFormNamePos = plonProcessLocation;
+                            //find end of variable name - guessing either , or crlf
+                            while (!(pstrSource.Substring(plonProcessLocation, 1) == "," | pstrSource.Substring(plonProcessLocation, 2) == System.Environment.NewLine | plonProcessLocation >= pstrSource.Length)) plonProcessLocation++;
+                            foreach(string sstrEachOpenform in mdicSubVariableValues4OpenForms[pstrSource.Substring(slonStartOpenFormNamePos, plonProcessLocation - slonStartOpenFormNamePos)])
+                            {
+                                mlstOpenFormNames.Add(sstrEachOpenform);
+                                mlonNumOpenFormNames++;
+                            }
+                            sstrTranslatedWord += "location.href = \"Form_\"+" + pstrSource.Substring(slonStartOpenFormNamePos, plonProcessLocation - slonStartOpenFormNamePos) + "+\".php\";";
+                        }
 
                         break;
 
                     default:
-                        //must be Variable or Function
-                        //NEED VARIABLE AND FUNCTION CODE HERE
+                        //quote (constant) - (example of problem: Form_NewMenu.txt Exit_Application_Click())
+                        if (sstrWord.Substring(0, 1) == "\"" | sstrWord.Substring(0, 1) == "'") //find close quote and pass that as is
+                        {
+                            plonProcessLocation -= sstrWord.Length; //need to start at begining of word to find close quote so backing up to do that
+                            int sintStartQuote = plonProcessLocation;
+                            string sstrCloseQuoteType;
+                            if (pstrSource.Substring(plonProcessLocation, 1) == "\"") sstrCloseQuoteType = "\"";
+                            else if (pstrSource.Substring(plonProcessLocation, 1) == "'") sstrCloseQuoteType = "'";
+                            else
+                            {
+                                MessageBox.Show("unknown Close Quote Type");
+                                sstrCloseQuoteType = "";
+                            }
+                            plonProcessLocation++; //jump over first quote
+                            while (!(pstrSource.Substring(plonProcessLocation, 1) == sstrCloseQuoteType)) plonProcessLocation++;
+                            plonProcessLocation++; //include close quote
+                            sstrTranslatedWord += pstrSource.Substring(sintStartQuote, plonProcessLocation-sintStartQuote);
+                        }
+
+                        //Sub/Function level variables
+                        else if (mlstSubVariables.Contains(sstrWord))
+                        {
+                            sstrTranslatedWord += sstrWord;
+                            //OpenForms that use variables need the value of those to add to mlstOpenFormNames
+
+                            //value should be after = - going to use slonProcLoc so as not to mess with plonProcessLocation to do this
+                            int slonProcLoc = plonProcessLocation;
+                            if (pstrSource.Substring(slonProcLoc, 3) == " = ")
+                            {
+                                slonProcLoc += 3;
+                                //if first character is quote then we are going to save it
+                                string sstrCloseQuoteType = "";
+                                if (pstrSource.Substring(slonProcLoc, 1) == "\"") sstrCloseQuoteType = "\"";
+                                else if (pstrSource.Substring(slonProcLoc, 1) == "'") sstrCloseQuoteType = "'";
+                                if (sstrCloseQuoteType != "")
+                                {
+                                    slonProcLoc++; //step over quote
+                                    int sintStartValue = slonProcLoc;
+                                    while (!(pstrSource.Substring(slonProcLoc, 1) == sstrCloseQuoteType)) slonProcLoc++;
+                                    string sstrValue = pstrSource.Substring(sintStartValue, slonProcLoc - sintStartValue);
+                                    slonProcLoc++; //step over quote
+                                    if(pstrSource.Substring(slonProcLoc, 2) == System.Environment.NewLine)
+                                    {
+                                        if (mdicSubVariableValues4OpenForms.ContainsKey(sstrWord))
+                                        {
+                                            List<string> slstVarValues = mdicSubVariableValues4OpenForms[sstrWord];
+                                            slstVarValues.Add(sstrValue);
+                                        }
+                                        else
+                                        {
+                                            List<string> slstVarValues = new List<string>();
+                                            slstVarValues.Add(sstrValue);
+                                            mdicSubVariableValues4OpenForms.Add(sstrWord, slstVarValues);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        //need else if() for module level variables
+                        //need else if() for global level varaibles
+                        //need else if() for module level functions
+                        //need else if() for global level funcitons
+
+                        else
+                        {
+                            //write out each word here not processed with // infront to show in output still needs translating
+                            sstrTranslatedWord += "//" + sstrWord;
+                        }
+
                         break;
                 }
             }
