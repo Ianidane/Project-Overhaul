@@ -98,6 +98,7 @@ namespace wfavbVBA2PHPone
             while (!(pstrSource.Substring(plonProcessLocation, 1) == ")"))
             {
                 while (pstrSource.Substring(plonProcessLocation, 1) == " ") plonProcessLocation++;
+                if (pstrSource.Substring(plonProcessLocation, 9) == "Optional " | pstrSource.Substring(plonProcessLocation, 11) == System.Environment.NewLine + "Optional") plonProcessLocation += 9;
                 int sintStartParmPos = plonProcessLocation;
                 while (!(pstrSource.Substring(plonProcessLocation, 1) == " " | pstrSource.Substring(plonProcessLocation, 1) == "," | pstrSource.Substring(plonProcessLocation, 1) == ")" | plonProcessLocation >= pstrSource.Length)) plonProcessLocation++; //find space, "," or ) - end of Parm Name
                 mstrFunctionTranslated += sstrComma + pstrSource.Substring(sintStartParmPos, plonProcessLocation - sintStartParmPos);
