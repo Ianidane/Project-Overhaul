@@ -154,16 +154,24 @@ namespace wfavbVBA2PHPone
                 if (sclsControlInfo.Name != null)
                     if (sclsControlInfo.BeginType == "CommandButton")
                     {
+                        if ((sclsControlInfo.Visible != null) | (sclsControlInfo.beginformfooter == 1))
+                        {
+                            sstrPHP += "    <!-- ";
+                        }
                         sstrPHP += "    <input type='button' id=" + DropQuotes(sclsControlInfo.Name);
                         sstrPHP += " value='" + DropQuotes(sclsControlInfo.Caption) + "'";
                         sstrPHP += " style='position:absolute; left:" + sclsControlInfo.Left / 10 + "; top:" + sclsControlInfo.Top / 10 + "; width:" + sclsControlInfo.Width / 10 + "; height:" + sclsControlInfo.Height / 10 + "'";
                         if (sclsControlInfo.OnClick == "\"[Event Procedure]\"")
                             sstrPHP += " onclick='" + DropQuotes(sclsControlInfo.Name) + "_Click();'";
-                        sstrPHP += ">" + System.Environment.NewLine;
+                        sstrPHP += ">";
+                        if ((sclsControlInfo.Visible != null) | (sclsControlInfo.beginformfooter == 1))
+                        {
+                            sstrPHP += " -->";
+                        }
                     }
                 if (sclsControlInfo.BeginType == "TextBox")
                 {
-                    if (sclsControlInfo.Visible != null)
+                    if ((sclsControlInfo.Visible != null) | (sclsControlInfo.beginformfooter == 1))
                     {
                         sstrPHP += "    <!-- ";
                     }
@@ -192,14 +200,14 @@ namespace wfavbVBA2PHPone
                         sstrPHP += " style='position:absolute; left:" + sclsControlInfo.Left / 10 + "; top:" + sclsControlInfo.Top / 10 + "; width:" + sclsControlInfo.Width / 10 + "; height:" + sclsControlInfo.Height / 10 + "'>";
                     }
 
-                    if (sclsControlInfo.Visible != null)
+                    if ((sclsControlInfo.Visible != null) | (sclsControlInfo.beginformfooter == 1))
                     {
                         sstrPHP += " -->";
                     }
                 }
                 if (sclsControlInfo.BeginType == "Label")
                 {
-                    if (sclsControlInfo.Visible != null)
+                    if ((sclsControlInfo.Visible != null) | (sclsControlInfo.beginformfooter == 1))
                     {
                         sstrPHP += "    <!-- ";
                     }
@@ -242,14 +250,14 @@ namespace wfavbVBA2PHPone
                         }
    
                     }
-                    if (sclsControlInfo.Visible != null)
+                    if ((sclsControlInfo.Visible != null) | (sclsControlInfo.beginformfooter == 1))
                     {
                         sstrPHP += " -->";
                     }
                 }
                 if (sclsControlInfo.BeginType == "CheckBox")
                 {
-                    if (sclsControlInfo.Visible != null)
+                    if ((sclsControlInfo.Visible != null) | (sclsControlInfo.beginformfooter == 1))
                     {
                         sstrPHP += "    <!-- ";
                     }
@@ -278,14 +286,14 @@ namespace wfavbVBA2PHPone
                     {
                         sstrPHP += " style='position:absolute; left:" + sclsControlInfo.Left / 10 + "; top:" + sclsControlInfo.Top / 10 + "; width:" + sclsControlInfo.Width / 10 + "; height:" + sclsControlInfo.Height / 10 + "'>";
                     }
-                    if (sclsControlInfo.Visible != null)
+                    if ((sclsControlInfo.Visible != null) | (sclsControlInfo.beginformfooter == 1))
                     {
                         sstrPHP += " -->";
                     }
                 }
                 if (sclsControlInfo.BeginType == "OptionButton")
                 {
-                    if (sclsControlInfo.Visible != null)
+                    if ((sclsControlInfo.Visible != null) | (sclsControlInfo.beginformfooter == 1))
                     {
                         sstrPHP += "    <!-- ";
                     }
@@ -300,7 +308,7 @@ namespace wfavbVBA2PHPone
                     {
                         sstrPHP += " style='position:absolute; left:" + sclsControlInfo.Left / 10 + "; top:" + sclsControlInfo.Top / 10 + "; width:" + sclsControlInfo.Width / 10 + "; height:" + sclsControlInfo.Height / 10 + "'>";
                     }
-                    if (sclsControlInfo.Visible != null)
+                    if ((sclsControlInfo.Visible != null) | (sclsControlInfo.beginformfooter == 1))
                     {
                         sstrPHP += " -->";
                     }
@@ -308,7 +316,7 @@ namespace wfavbVBA2PHPone
 
                 if (sclsControlInfo.BeginType == "ToggleButton") // I quite possibly may have used the wrong html for this one, I used a regular button. Couldnt find a toggleable button in html closest I think is a radiobutton but that requires a label next to it
                 {
-                    if (sclsControlInfo.Visible != null)
+                    if ((sclsControlInfo.Visible != null) | (sclsControlInfo.beginformfooter == 1))
                     {
                         sstrPHP += "    <!-- ";
                     }
@@ -340,7 +348,7 @@ namespace wfavbVBA2PHPone
 
                     sstrPHP += sclsControlInfo.Caption;
                     sstrPHP += "</button>";
-                    if (sclsControlInfo.Visible != null)
+                    if ((sclsControlInfo.Visible != null) | (sclsControlInfo.beginformfooter == 1))
                     {
                         sstrPHP += " -->";
                     }
@@ -348,7 +356,7 @@ namespace wfavbVBA2PHPone
 
                 if (sclsControlInfo.BeginType == "ListBox" || sclsControlInfo.BeginType == "ComboBox")
                 {
-                    if (sclsControlInfo.Visible != null)
+                    if ((sclsControlInfo.Visible != null) | (sclsControlInfo.beginformfooter == 1))
                     {
                         sstrPHP += "    <!-- ";
                     }
@@ -381,7 +389,7 @@ namespace wfavbVBA2PHPone
                     if (sclsControlInfo.OnClick == "\"[Event Procedure]\"")
                         sstrPHP += " onclick='" + DropQuotes(sclsControlInfo.Name) + "_Click();'";
                     sstrPHP += ">";
-                    if (sclsControlInfo.Visible != null)
+                    if ((sclsControlInfo.Visible != null) | (sclsControlInfo.beginformfooter == 1))
                     {
                         sstrPHP += " -->";
                     }
