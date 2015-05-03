@@ -35,7 +35,8 @@ namespace wfavbVBA2PHPone
             slonNestDepth = 0;
 
             ControlInfo sclsControlInfo = null;
-            sclsControlInfo = new ControlInfo(pstrSource, ref plonProcessLocation, ref slonNestDepth, ref mcolAllControls, ref mcolControlsByName); //not sure slstAllControls is being used
+//150503            sclsControlInfo = new ControlInfo(pstrSource, ref plonProcessLocation, ref slonNestDepth, ref mcolAllControls, ref mcolControlsByName); //not sure slstAllControls is being used
+            sclsControlInfo = new ControlInfo(pstrSource, ref plonProcessLocation, ref slonNestDepth, ref mcolAllControls, ref mcolControlsByName, false); //not sure slstAllControls is being used
 
             return sclsControlInfo;
         }

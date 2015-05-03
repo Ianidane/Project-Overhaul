@@ -106,7 +106,7 @@ namespace wfavbVBA2PHPone
         {
             get { return mstrRowSource; }
         }
-        
+
         //Ian,Alex - might need to add more properties here from Controls as needed - (was hoping mlstAttributes would give all attributes like these as needed but can't get working)
         //Ian,Alex will need to add code to set these properties below where commented
 
@@ -115,11 +115,13 @@ namespace wfavbVBA2PHPone
 
         //don't think plonNestDepth is really needed - pcolControlsByName just parameter so far, code to set not done yet
         //pcolControlsByName is being populated, but so far not used - I thought it would be needed
-        public int beginformfooter = 0;
-        
+        public bool mbolInsideFormFooter = false;
 
-        public ControlInfo(string pstrSource, ref int plonProcessLocation, ref int plonNestDepth, ref Collection plstAllControls, ref Collection pcolControlsByName)
+
+        //150503        public ControlInfo(string pstrSource, ref int plonProcessLocation, ref int plonNestDepth, ref Collection plstAllControls, ref Collection pcolControlsByName)
+        public ControlInfo(string pstrSource, ref int plonProcessLocation, ref int plonNestDepth, ref Collection plstAllControls, ref Collection pcolControlsByName, bool pbolInsideFormFooter)
         {
+            mbolInsideFormFooter = pbolInsideFormFooter;
             plstAllControls.Add(this);
 
             //note - you'll notice most "Do Until"s will have "Or plonProcessLocation >= Len(pstrSource)" in the condition for stopping the looping.  This is to be sure if we unexpectedly find the end of the file that we don't error.  Probably would be a better idea to actually throw an error if that happened rather than just falling out of the function
@@ -151,89 +153,80 @@ namespace wfavbVBA2PHPone
             plonProcessLocation += 2;//step over vbCRLf
             mlonControlLinesStartPos = plonProcessLocation;
 
-            
+
             while (!(pstrSource.Substring(plonProcessLocation, 3) == "End"))
             { //run loop until finding "End"
                 while (!(pstrSource.Substring(plonProcessLocation, 1) != " " | plonProcessLocation >= pstrSource.Length)) plonProcessLocation++;
+                if ((pstrSource.Substring(plonProcessLocation, 5) == "Begin"))
                 {
-                    if (pstrSource.Substring(plonProcessLocation, 16) == "Begin FormFooter")
+                    ControlInfo sclsControlInfo = null;
+                    sclsControlInfo = new ControlInfo(pstrSource, ref plonProcessLocation, ref plonNestDepth, ref plstAllControls, ref pcolControlsByName, mstrBeginType == "FormFooter" | mbolInsideFormFooter == true);
+                    mclsSubControls.Add(sclsControlInfo);
+                }
+                else if (pstrSource.Substring(plonProcessLocation, 3) == "End")
+                {
+                    //do nothing - will kick out of Do Until loop
+                }
+                else
+                {
+                    //its an Attribute
+                    Attribute sstcAttr = default(Attribute);
+                    sstcAttr = new Attribute();
+
+                    //AttrName
+                    int slonStartAttrNamePos = plonProcessLocation;
+                    while (!(pstrSource.Substring(plonProcessLocation, 1) == " " | plonProcessLocation >= pstrSource.Length)) plonProcessLocation++; //find space - there is always a space after attr name
+                    sstcAttr.Name = pstrSource.Substring(slonStartAttrNamePos, plonProcessLocation - slonStartAttrNamePos);
+
+                    while (!(pstrSource.Substring(plonProcessLocation, 1) == "=" | plonProcessLocation >= pstrSource.Length)) plonProcessLocation++;
+                    plonProcessLocation++; //step over "="
+
+                    //AttrValue
+                    int slonStartAttrValuePos = 0;
+                    slonStartAttrValuePos = plonProcessLocation;
+                    while (!(pstrSource.Substring(plonProcessLocation, 2) == System.Environment.NewLine | plonProcessLocation >= pstrSource.Length)) plonProcessLocation++;
+                    sstcAttr.Value = pstrSource.Substring(slonStartAttrValuePos, plonProcessLocation - slonStartAttrValuePos);
+
+                    if (sstcAttr.Name == "Name") mstrName = sstcAttr.Value; //150216
+                    if (sstcAttr.Name == "OnClick") mstrOnClick = sstcAttr.Value;
+                    if (sstcAttr.Name == "Caption") mstrCaption = sstcAttr.Value;
+                    if (sstcAttr.Name == "Visible") mstrVisible = sstcAttr.Value;
+                    if (sstcAttr.Name == "DefaultValue") mstrDefaultValue = sstcAttr.Value;
+                    if (sstcAttr.Name == "RowSource") mstrRowSource = sstcAttr.Value;
+                    if (sstcAttr.Name == "Left") mintLeft = Convert.ToInt32(sstcAttr.Value);
+                    if (sstcAttr.Name == "Top") mintTop = Convert.ToInt32(sstcAttr.Value);
+                    if (sstcAttr.Name == "Width") mintWidth = Convert.ToInt32(sstcAttr.Value);
+                    if (sstcAttr.Name == "Height") mintHeight = Convert.ToInt32(sstcAttr.Value);
+                    if (sstcAttr.Name == "SpecialEffect") mintSpecialEffect = Convert.ToInt32(sstcAttr.Value);
+                    if (sstcAttr.Name == "BorderWidth") mintBorderWidth = Convert.ToInt32(sstcAttr.Value);
+                    if (sstcAttr.Name == "ColumnCount") mintColumnCount = Convert.ToInt32(sstcAttr.Value);
+                    if (sstcAttr.Name == "TabIndex") mintTabIndex = Convert.ToInt32(sstcAttr.Value);
+
+                    //Ian,Alex - this is where you'd set any new properties you've added, after adding above where comment indicates
+
+                    //Translate vauge attribute values to correct HTML values
+                    if (mstrVisible == " NotDefault")
                     {
-                        beginformfooter = 1;
-                        ControlInfo sclsControlInfo = null;
-                        sclsControlInfo = new ControlInfo(pstrSource, ref plonProcessLocation, ref plonNestDepth, ref plstAllControls, ref pcolControlsByName);
-                        mclsSubControls.Add(sclsControlInfo);
+                        mstrVisible = "hidden";
                     }
-                    else if ((pstrSource.Substring(plonProcessLocation, 5) == "Begin") && (pstrSource.Substring(plonProcessLocation, 16) != "Begin FormFooter"))
+
+                    if (sstcAttr.Name == "Name")
                     {
-                        ControlInfo sclsControlInfo = null;
-                        sclsControlInfo = new ControlInfo(pstrSource, ref plonProcessLocation, ref plonNestDepth, ref plstAllControls, ref pcolControlsByName);
-                        mclsSubControls.Add(sclsControlInfo);
+                        pcolControlsByName.Add(this, sstcAttr.Value); //not used yet - I thought it would be needed but so far no
                     }
-                    else if (pstrSource.Substring(plonProcessLocation, 3) == "End")
+
+
+                    //there are Attributes (mostly bits, like GUID, PictureDate,...) that we don't care about - form is GUID = BEGIN .... END
+                    if (sstcAttr.Value == " Begin")
                     {
-                        //do nothing - will kick out of Do Until loop
+                        while (!(pstrSource.Substring(plonProcessLocation, 3) == "End" | plonProcessLocation >= pstrSource.Length)) plonProcessLocation++;
+                        plonProcessLocation += 3; //step over "End"
                     }
                     else
                     {
-                        //its an Attribute
-                        Attribute sstcAttr = default(Attribute);
-                        sstcAttr = new Attribute();
-
-                        //AttrName
-                        int slonStartAttrNamePos = plonProcessLocation;
-                        while (!(pstrSource.Substring(plonProcessLocation, 1) == " " | plonProcessLocation >= pstrSource.Length)) plonProcessLocation++; //find space - there is always a space after attr name
-                        sstcAttr.Name = pstrSource.Substring(slonStartAttrNamePos, plonProcessLocation - slonStartAttrNamePos);
-
-                        while (!(pstrSource.Substring(plonProcessLocation, 1) == "=" | plonProcessLocation >= pstrSource.Length)) plonProcessLocation++;
-                        plonProcessLocation++; //step over "="
-
-                        //AttrValue
-                        int slonStartAttrValuePos = 0;
-                        slonStartAttrValuePos = plonProcessLocation;
-                        while (!(pstrSource.Substring(plonProcessLocation, 2) == System.Environment.NewLine | plonProcessLocation >= pstrSource.Length)) plonProcessLocation++;
-                        sstcAttr.Value = pstrSource.Substring(slonStartAttrValuePos, plonProcessLocation - slonStartAttrValuePos);
-
-                        if (sstcAttr.Name == "Name") mstrName = sstcAttr.Value; //150216
-                        if (sstcAttr.Name == "OnClick") mstrOnClick = sstcAttr.Value;
-                        if (sstcAttr.Name == "Caption") mstrCaption = sstcAttr.Value;
-                        if (sstcAttr.Name == "Visible") mstrVisible = sstcAttr.Value;
-                        if (sstcAttr.Name == "DefaultValue") mstrDefaultValue = sstcAttr.Value;
-                        if (sstcAttr.Name == "RowSource") mstrRowSource = sstcAttr.Value;
-                        if (sstcAttr.Name == "Left") mintLeft = Convert.ToInt32(sstcAttr.Value);
-                        if (sstcAttr.Name == "Top") mintTop = Convert.ToInt32(sstcAttr.Value);
-                        if (sstcAttr.Name == "Width") mintWidth = Convert.ToInt32(sstcAttr.Value);
-                        if (sstcAttr.Name == "Height") mintHeight = Convert.ToInt32(sstcAttr.Value);
-                        if (sstcAttr.Name == "SpecialEffect") mintSpecialEffect = Convert.ToInt32(sstcAttr.Value);
-                        if (sstcAttr.Name == "BorderWidth") mintBorderWidth = Convert.ToInt32(sstcAttr.Value);
-                        if (sstcAttr.Name == "ColumnCount") mintColumnCount = Convert.ToInt32(sstcAttr.Value);
-                        if (sstcAttr.Name == "TabIndex") mintTabIndex = Convert.ToInt32(sstcAttr.Value);
-
-                        //Ian,Alex - this is where you'd set any new properties you've added, after adding above where comment indicates
-
-                        //Translate vauge attribute values to correct HTML values
-                        if (mstrVisible == " NotDefault")
-                        {
-                            mstrVisible = "hidden";
-                        }
-
-                        if (sstcAttr.Name == "Name")
-                        {
-                            pcolControlsByName.Add(this, sstcAttr.Value); //not used yet - I thought it would be needed but so far no
-                        }
-
-
-                        //there are Attributes (mostly bits, like GUID, PictureDate,...) that we don't care about - form is GUID = BEGIN .... END
-                        if (sstcAttr.Value == " Begin")
-                        {
-                            while (!(pstrSource.Substring(plonProcessLocation, 3) == "End" | plonProcessLocation >= pstrSource.Length)) plonProcessLocation++;
-                            plonProcessLocation += 3; //step over "End"
-                        }
-                        else
-                        {
-                            mlstAttributes.Add(sstcAttr);
-                        }
-                        plonProcessLocation += 2; //step over vbCrLf
+                        mlstAttributes.Add(sstcAttr);
                     }
+                    plonProcessLocation += 2; //step over vbCrLf
                 }
             }
 
