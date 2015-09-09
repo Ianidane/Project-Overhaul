@@ -203,11 +203,28 @@ namespace wfavbVBA2PHPone
                         while (!(pstrSource.Substring(plonProcessLocation, 1) == " " | pstrSource.Substring(plonProcessLocation, 2) == System.Environment.NewLine | plonProcessLocation >= pstrSource.Length)) plonProcessLocation++;
                         string sstrVarName = pstrSource.Substring(slonStartOpenVarNamePos, plonProcessLocation - slonStartOpenVarNamePos);
                         mlstSubVariables.Add(sstrVarName);
-                        sstrTranslatedWord += "//could initialize " + sstrVarName + " here" + System.Environment.NewLine;
-                        //not using variable type - skipping it below
+                        //step over 'As'
+                        plonProcessLocation++;
+                        while (!(pstrSource.Substring(plonProcessLocation, 1) == " " | pstrSource.Substring(plonProcessLocation, 2) == System.Environment.NewLine | plonProcessLocation >= pstrSource.Length)) plonProcessLocation++;
+                        plonProcessLocation++;
+                        int slonStartOpenVarTypePos = plonProcessLocation;
+                        //find end of VarType
+                        while (!(pstrSource.Substring(plonProcessLocation, 1) == " " | pstrSource.Substring(plonProcessLocation, 2) == System.Environment.NewLine | plonProcessLocation >= pstrSource.Length)) plonProcessLocation++;
+                        string sstrVarType = pstrSource.Substring(slonStartOpenVarTypePos, plonProcessLocation - slonStartOpenVarTypePos);
+                        if (sstrVarType == "String")
+                        {
+                            sstrTranslatedWord += "var " + sstrVarName + " = " + "'';" + System.Environment.NewLine;
+                        }
+                        else if (sstrVarType == "Long")
+                        {
+                            sstrTranslatedWord += "var " + sstrVarName + " = " + "0;" + System.Environment.NewLine;
+                        }
+                        else
+                        {
+                            sstrTranslatedWord += "//could initialize " + sstrVarName + " here" + System.Environment.NewLine;
+                        }
                         while (!(pstrSource.Substring(plonProcessLocation, 2) == System.Environment.NewLine | plonProcessLocation >= pstrSource.Length)) plonProcessLocation++;
                         plonProcessLocation += 2; //skip over vbcrlf 
-
                         break;
 
                     case "DoCmd.OpenForm":
