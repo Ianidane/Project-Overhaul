@@ -252,15 +252,17 @@ namespace wfavbVBA2PHPone
                             int slonStartOpenFormNamePos = plonProcessLocation;
                             //find end of variable name - guessing either , or crlf
                             while (!(pstrSource.Substring(plonProcessLocation, 1) == "," | pstrSource.Substring(plonProcessLocation, 2) == System.Environment.NewLine | plonProcessLocation >= pstrSource.Length)) plonProcessLocation++;
-                            foreach(string sstrEachOpenform in mdicSubVariableValues4OpenForms[pstrSource.Substring(slonStartOpenFormNamePos, plonProcessLocation - slonStartOpenFormNamePos)])
-                            {
-                                mlstOpenFormNames.Add(sstrEachOpenform);
-                                mlonNumOpenFormNames++;
-                            }
+                            //Below commented out by Alex, because it was throwing an error after 35 pages. Cant figure out why, will come back later.
+                            //foreach(string sstrEachOpenform in mdicSubVariableValues4OpenForms[pstrSource.Substring(slonStartOpenFormNamePos, plonProcessLocation - slonStartOpenFormNamePos)])
+                            //{
+                            //    mlstOpenFormNames.Add(sstrEachOpenform);
+                            //    mlonNumOpenFormNames++;
+                            //}
                             sstrTranslatedWord += "location.href = \"Form_\"+" + pstrSource.Substring(slonStartOpenFormNamePos, plonProcessLocation - slonStartOpenFormNamePos) + "+\".php\";";
                         }
 
                         break;
+
 
                     default:
                         //quote (constant) - (example of problem: Form_NewMenu.txt Exit_Application_Click())
@@ -304,7 +306,7 @@ namespace wfavbVBA2PHPone
                                     while (!(pstrSource.Substring(slonProcLoc, 1) == sstrCloseQuoteType)) slonProcLoc++;
                                     string sstrValue = pstrSource.Substring(sintStartValue, slonProcLoc - sintStartValue);
                                     slonProcLoc++; //step over quote
-                                    if(pstrSource.Substring(slonProcLoc, 2) == System.Environment.NewLine)
+                                    if (pstrSource.Substring(slonProcLoc, 2) == System.Environment.NewLine)
                                     {
                                         if (mdicSubVariableValues4OpenForms.ContainsKey(sstrWord))
                                         {
@@ -318,9 +320,29 @@ namespace wfavbVBA2PHPone
                                             mdicSubVariableValues4OpenForms.Add(sstrWord, slstVarValues);
                                         }
                                     }
+
+                                    //temporary to translate everything after the last quote
+                                    int slonVarInfoStartPos = plonProcessLocation;
+                                    while (!(pstrSource.Substring(plonProcessLocation, 2) == System.Environment.NewLine | plonProcessLocation >= pstrSource.Length)) plonProcessLocation++;
+                                    string sstrVarInfo = pstrSource.Substring(slonVarInfoStartPos, plonProcessLocation - slonVarInfoStartPos);
+                                    sstrTranslatedWord += sstrVarInfo;
+                                  
+                                
+                                }
+                                else //translate everything after the equal sign
+                                {
+                                    
+                                    int slonVarInfoStartPos = plonProcessLocation;
+                                    while (!(pstrSource.Substring(plonProcessLocation, 2) == System.Environment.NewLine | plonProcessLocation >= pstrSource.Length)) plonProcessLocation++;
+                                    string sstrVarInfo = pstrSource.Substring(slonVarInfoStartPos, plonProcessLocation - slonVarInfoStartPos);
+                                    sstrTranslatedWord += sstrVarInfo;
+
                                 }
                             }
+
+                      
                         }
+
 
                         //need else if() for module level variables
                         //need else if() for global level varaibles
