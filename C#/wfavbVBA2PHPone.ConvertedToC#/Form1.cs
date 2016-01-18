@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using IronPython.Hosting;
 
 namespace wfavbVBA2PHPone
 {
@@ -79,6 +80,20 @@ namespace wfavbVBA2PHPone
                 }
                 slonTempPagesProcess = slonTempPagesProcess + 1;
             }
+
+
+            //All this python stuff is a test/example
+            var py = Python.CreateEngine();                                 //create python engine
+            var paths = py.GetSearchPaths();                                //used to inlude python libraries
+            var scope = py.CreateScope();                                   //allows us to exchange information between C# and Python script
+            paths.Add(@"C:\Python27\Lib");                                  //add to include python libraries
+            py.SetSearchPaths(paths);                                       //includes them
+            scope.SetVariable("input1", "Yaaay");                           //sets a variable in the scope to "yaaay" this variable can then be used in a python script
+            py.ExecuteFile("test.py", scope);                               //runs test.py using the variables in the scope like "yaaay"
+            py.CreateScriptSourceFromFile("test.py").Execute(scope);        //get information to use .getvariable
+            var result = scope.GetVariable("input2");                       //get specific variable
+
+
             MessageBox.Show("done");
         }
         public Form1()

@@ -9,6 +9,7 @@ using System.Windows.Forms;
 using System.Linq;
 using System.Xml.Linq;
 using System.Threading.Tasks;
+using IronPython.Hosting;
 
 //Git Test
 
@@ -95,6 +96,7 @@ namespace wfavbVBA2PHPone
 
             string sstrPHP = "";
             sstrPHP += "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0 Transitional//EN\" > " + System.Environment.NewLine;
+            sstrPHP += "<?php include 'Serverinfo.php'; ?>" + System.Environment.NewLine;
             sstrPHP += "<html>" + System.Environment.NewLine;
             sstrPHP += "  <head>" + System.Environment.NewLine;
             sstrPHP += "    <link href=\"images/NewPro.css\" rel=\"stylesheet\" type=\"text/css\">" + System.Environment.NewLine;
@@ -155,7 +157,7 @@ namespace wfavbVBA2PHPone
                 {
                     if (sclsControlInfo.BeginType == "CommandButton")
                     {
-                        if (sclsControlInfo.Visible != null | sclsControlInfo.mbolInsideFormFooter == true)
+                        if (sclsControlInfo.Visible != null)
                         {
                             sstrPHP += "    <!-- ";
                         }
@@ -164,8 +166,8 @@ namespace wfavbVBA2PHPone
                         sstrPHP += " style='position:absolute; left:" + sclsControlInfo.Left / 10 + "; top:" + sclsControlInfo.Top / 10 + "; width:" + sclsControlInfo.Width / 10 + "; height:" + sclsControlInfo.Height / 10 + "'";
                         if (sclsControlInfo.OnClick == "\"[Event Procedure]\"")
                             sstrPHP += " onclick='" + DropQuotes(sclsControlInfo.Name) + "_Click();'";
-                        sstrPHP += ">";
-                        if (sclsControlInfo.Visible != null | sclsControlInfo.mbolInsideFormFooter == true)
+                        sstrPHP += "></input>";
+                        if (sclsControlInfo.Visible != null)
                         {
                             sstrPHP += " -->";
                         }
@@ -173,7 +175,7 @@ namespace wfavbVBA2PHPone
                 }
                 if (sclsControlInfo.BeginType == "TextBox")
                 {
-                    if (sclsControlInfo.Visible != null | sclsControlInfo.mbolInsideFormFooter == true)
+                    if (sclsControlInfo.Visible != null)
                     {
                         sstrPHP += "    <!-- ";
                     }
@@ -195,20 +197,20 @@ namespace wfavbVBA2PHPone
                     }
                     if (sclsControlInfo.Left == null && sclsControlInfo.Top == null && sclsControlInfo.Width == null && sclsControlInfo.Height == null)
                     {
-                        sstrPHP += " style=''>";
+                        sstrPHP += " style=''></input>";
                     }
                     else
                     {
-                        sstrPHP += " style='position:absolute; left:" + sclsControlInfo.Left / 10 + "; top:" + sclsControlInfo.Top / 10 + "; width:" + sclsControlInfo.Width / 10 + "; height:" + sclsControlInfo.Height / 10 + "'>";
+                        sstrPHP += " style='position:absolute; left:" + sclsControlInfo.Left / 10 + "; top:" + sclsControlInfo.Top / 10 + "; width:" + sclsControlInfo.Width / 10 + "; height:" + sclsControlInfo.Height / 10 + "'></input>";
                     }
-                    if (sclsControlInfo.Visible != null | sclsControlInfo.mbolInsideFormFooter == true)
+                    if (sclsControlInfo.Visible != null)
                     {
                         sstrPHP += " -->";
                     }
                 }
                 if (sclsControlInfo.BeginType == "Label")
                 {
-                    if (sclsControlInfo.Visible != null | sclsControlInfo.mbolInsideFormFooter == true)
+                    if (sclsControlInfo.Visible != null)
                     {
                         sstrPHP += "    <!-- ";
                     }
@@ -251,14 +253,14 @@ namespace wfavbVBA2PHPone
                         }
 
                     }
-                    if (sclsControlInfo.Visible != null | sclsControlInfo.mbolInsideFormFooter == true)
+                    if (sclsControlInfo.Visible != null)
                     {
                         sstrPHP += " -->";
                     }
                 }
                 if (sclsControlInfo.BeginType == "CheckBox")
                 {
-                    if (sclsControlInfo.Visible != null | sclsControlInfo.mbolInsideFormFooter == true)
+                    if (sclsControlInfo.Visible != null)
                     {
                         sstrPHP += "    <!-- ";
                     }
@@ -281,20 +283,20 @@ namespace wfavbVBA2PHPone
                     }
                     if (sclsControlInfo.Left == null && sclsControlInfo.Top == null && sclsControlInfo.Width == null && sclsControlInfo.Height == null)
                     {
-                        sstrPHP += " style=''>";
+                        sstrPHP += " style=''></input>";
                     }
                     else
                     {
-                        sstrPHP += " style='position:absolute; left:" + sclsControlInfo.Left / 10 + "; top:" + sclsControlInfo.Top / 10 + "; width:" + sclsControlInfo.Width / 10 + "; height:" + sclsControlInfo.Height / 10 + "'>";
+                        sstrPHP += " style='position:absolute; left:" + sclsControlInfo.Left / 10 + "; top:" + sclsControlInfo.Top / 10 + "; width:" + sclsControlInfo.Width / 10 + "; height:" + sclsControlInfo.Height / 10 + "'></input>";
                     }
-                    if (sclsControlInfo.Visible != null | sclsControlInfo.mbolInsideFormFooter == true)
+                    if (sclsControlInfo.Visible != null)
                     {
                         sstrPHP += " -->";
                     }
                 }
                 if (sclsControlInfo.BeginType == "OptionButton")
                 {
-                    if (sclsControlInfo.Visible != null | sclsControlInfo.mbolInsideFormFooter == true)
+                    if (sclsControlInfo.Visible != null)
                     {
                         sstrPHP += "    <!-- ";
                     }
@@ -302,13 +304,13 @@ namespace wfavbVBA2PHPone
 
                     if (sclsControlInfo.Left == null && sclsControlInfo.Top == null && sclsControlInfo.Width == null && sclsControlInfo.Height == null)
                     {
-                        sstrPHP += " style=''>";
+                        sstrPHP += " style=''></input>";
                     }
                     else
                     {
-                        sstrPHP += " style='position:absolute; left:" + sclsControlInfo.Left / 10 + "; top:" + sclsControlInfo.Top / 10 + "; width:" + sclsControlInfo.Width / 10 + "; height:" + sclsControlInfo.Height / 10 + "'>";
+                        sstrPHP += " style='position:absolute; left:" + sclsControlInfo.Left / 10 + "; top:" + sclsControlInfo.Top / 10 + "; width:" + sclsControlInfo.Width / 10 + "; height:" + sclsControlInfo.Height / 10 + "'></input>";
                     }
-                    if (sclsControlInfo.Visible != null | sclsControlInfo.mbolInsideFormFooter == true)
+                    if (sclsControlInfo.Visible != null)
                     {
                         sstrPHP += " -->";
                     }
@@ -316,7 +318,7 @@ namespace wfavbVBA2PHPone
 
                 if (sclsControlInfo.BeginType == "ToggleButton") // I quite possibly may have used the wrong html for this one, I used a regular button. Couldnt find a toggleable button in html closest I think is a radiobutton but that requires a label next to it
                 {
-                    if (sclsControlInfo.Visible != null | sclsControlInfo.mbolInsideFormFooter == true)
+                    if (sclsControlInfo.Visible != null)
                     {
                         sstrPHP += "    <!-- ";
                     }
@@ -348,7 +350,7 @@ namespace wfavbVBA2PHPone
 
                     sstrPHP += sclsControlInfo.Caption;
                     sstrPHP += "</button>";
-                    if (sclsControlInfo.Visible != null | sclsControlInfo.mbolInsideFormFooter == true)
+                    if (sclsControlInfo.Visible != null)
                     {
                         sstrPHP += " -->";
                     }
@@ -356,7 +358,7 @@ namespace wfavbVBA2PHPone
 
                 if (sclsControlInfo.BeginType == "ListBox" || sclsControlInfo.BeginType == "ComboBox")
                 {
-                    if (sclsControlInfo.Visible != null | sclsControlInfo.mbolInsideFormFooter == true)
+                    if (sclsControlInfo.Visible != null)
                     {
                         sstrPHP += "    <!-- ";
                     }
@@ -388,10 +390,74 @@ namespace wfavbVBA2PHPone
                     if (sclsControlInfo.OnClick == "\"[Event Procedure]\"")
                         sstrPHP += " onclick='" + DropQuotes(sclsControlInfo.Name) + "_Click();'";
                     sstrPHP += ">";
-                    if (sclsControlInfo.Visible != null | sclsControlInfo.mbolInsideFormFooter == true)
+                    if (sclsControlInfo.RowSource != null)
+                    {
+                        var py = Python.CreateEngine();                           
+                        var paths = py.GetSearchPaths();                               
+                        var scope = py.CreateScope();                                   
+                        paths.Add(@"C:\Python27\Lib");                            
+                        py.SetSearchPaths(paths);                                       
+                                                       
+
+
+                        string rowsrc = sclsControlInfo.RowSource;
+
+                        //if (rowsrc.StartsWith("\"\\"))
+                        //{
+                        //    scope.SetVariable("name", sclsControlInfo.Name);
+                        //    scope.SetVariable("querytype", "noquery");
+                        //    scope.SetVariable("rowsource", rowsrc);
+                        //    scope.SetVariable("filename", mstrPageName);
+                        //    py.ExecuteFile("QueryFind.py", scope);
+                        //}
+
+                        //else if (rowsrc.StartsWith("\"_\""))
+                        //{
+                        //    scope.SetVariable("querytype", "find");
+                        //    scope.SetVariable("rowsource", rowsrc);
+                        //    scope.SetVariable("filename", mstrPageName);
+                        //    py.ExecuteFile("QueryFind.py", scope);
+                        //}
+
+                        if (rowsrc.StartsWith("\"SELECT"))
+                        {
+                            scope.SetVariable("name", sclsControlInfo.Name);
+                            scope.SetVariable("namelength", sclsControlInfo.Name.Length);
+                            scope.SetVariable("querytype", "needprettyquery");
+                            scope.SetVariable("rowsource", rowsrc);
+                            scope.SetVariable("filename", mstrPageName);
+                            py.ExecuteFile("C:/Users/Alex/Desktop/Work/Project-Overhaul/C#/wfavbVBA2PHPone.ConvertedToC#/QueryFind.py", scope);
+                            py.CreateScriptSourceFromFile("C:/Users/Alex/Desktop/Work/Project-Overhaul/C#/wfavbVBA2PHPone.ConvertedToC#/QueryFind.py").Execute(scope);        //get information to use .getvariable
+                            string result = scope.GetVariable("result");
+                            string selectname = scope.GetVariable("selectname");
+
+                            //Connect to DB
+                            sstrPHP += System.Environment.NewLine;
+                            sstrPHP += "    <?php" + System.Environment.NewLine;
+                            sstrPHP += "        $serverName = $SVNM;" + System.Environment.NewLine;
+                            sstrPHP += "        $connectionInfo = array( \"Database\"=>$DB, \"UID\"=>$UID, \"PWD\"=>$PWD);" + System.Environment.NewLine;
+                            sstrPHP += "        $conn = sqlsrv_connect( $serverName, $connectionInfo);" + System.Environment.NewLine + System.Environment.NewLine;
+                            sstrPHP += "        if( $conn ) {" + System.Environment.NewLine + "        }" + System.Environment.NewLine;
+                            sstrPHP += "        else{" + System.Environment.NewLine;
+                            sstrPHP += "            echo \"Connection could not be established.<br />\";" + System.Environment.NewLine;
+                            sstrPHP += "            die( print_r( sqlsrv_errors(), true));" + System.Environment.NewLine + "        }" + System.Environment.NewLine + System.Environment.NewLine;
+
+                            //Specific query
+                            sstrPHP += "        $sql = sqlsrv_query($conn, " + "\"" + result + "\"" + ");" + System.Environment.NewLine;
+                            sstrPHP += "        while( $row = sqlsrv_fetch_array($sql)){" + System.Environment.NewLine;
+                            sstrPHP += "        echo \"<Option value='\".$row['" + selectname + "'].\"'\".\">\".$row['" + selectname + "'].\"</Option>\";" + System.Environment.NewLine + "        }" + System.Environment.NewLine + "    ?>" + System.Environment.NewLine;
+
+                        }
+
+                    }
+
+                    sstrPHP += "    </select>";
+                    if (sclsControlInfo.Visible != null)
                     {
                         sstrPHP += " -->";
                     }
+
+                   
                 }
                 
 

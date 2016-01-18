@@ -9,6 +9,7 @@ using System.Windows.Forms;
 using System.Linq;
 using System.Xml.Linq;
 using System.Threading.Tasks;
+using System.Text.RegularExpressions;
 
 //can't get SafeSubstring working
 //namespace wfavbVBA2PHPone
@@ -321,23 +322,35 @@ namespace wfavbVBA2PHPone
                                         }
                                     }
 
-                                    //temporary to translate everything after the last quote
                                     int slonVarInfoStartPos = plonProcessLocation;
                                     while (!(pstrSource.Substring(plonProcessLocation, 2) == System.Environment.NewLine | plonProcessLocation >= pstrSource.Length)) plonProcessLocation++;
                                     string sstrVarInfo = pstrSource.Substring(slonVarInfoStartPos, plonProcessLocation - slonVarInfoStartPos);
-                                    sstrTranslatedWord += sstrVarInfo;
-                                  
-                                
-                                }
-                                else //translate everything after the equal sign
-                                {
-                                    
-                                    int slonVarInfoStartPos = plonProcessLocation;
-                                    while (!(pstrSource.Substring(plonProcessLocation, 2) == System.Environment.NewLine | plonProcessLocation >= pstrSource.Length)) plonProcessLocation++;
-                                    string sstrVarInfo = pstrSource.Substring(slonVarInfoStartPos, plonProcessLocation - slonVarInfoStartPos);
-                                    sstrTranslatedWord += sstrVarInfo;
+                                    if (sstrVarInfo.Contains("&"))
+                                    {
+                                        string result = Regex.Replace(sstrVarInfo, "&", "&&");
+                                        sstrTranslatedWord += result;
+                                    }
+
 
                                 }
+
+                               
+
+
+                                else //translate everything after the equal sign and change syntax
+                                {
+
+                                    int slonVarInfoStartPos = plonProcessLocation;
+                                    while (!(pstrSource.Substring(plonProcessLocation, 2) == System.Environment.NewLine | plonProcessLocation >= pstrSource.Length)) plonProcessLocation++;
+                                    string sstrVarInfo = pstrSource.Substring(slonVarInfoStartPos, plonProcessLocation - slonVarInfoStartPos);
+                                    if (sstrVarInfo.Contains("&"))
+                                    {
+                                        string result = Regex.Replace(sstrVarInfo, "&", "&&");
+                                        sstrTranslatedWord += result;
+                                    }
+
+                                }
+                 
                             }
 
                       
