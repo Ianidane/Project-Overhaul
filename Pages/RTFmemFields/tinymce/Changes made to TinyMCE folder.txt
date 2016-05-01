@@ -1,0 +1,6 @@
+140508
+Updated TinyMCE to Ver 4.
+
+Changed line "<script type="text/javascript" src="tiny_mce/tiny_mce.js"></script>" to "<script type="text/javascript" src="tiny_mce/tinymce.min.js"></script>" in all of the forms to use the new ver of TinyMCE.
+
+Changed the code in tiny_mce/CHO_Init1.js to comply with new ver of TinyMCE.

@@ -1,0 +1,26 @@
+<html>
+  <head>
+    <title></title>
+    <script>
+      var SpanID = '00112';
+      function test(){
+        divGetRefNums.innerHTML = "<span id='"+SpanID+"'>dynamic span</span>"
+        document.getElementById(SpanID).style.color = "red";
+      }
+    </script>
+  </head>
+  <body>
+    <table>
+      <tr>
+        <td colspan="3">
+          CHOTest - Table Name:<INPUT id=txtTableName value="ChoInit"><input type="button" value="Get RefNums" id="btnGetRefNums" onclick="test()">
+          <span id="00112old" style='color:blue'>blue</span>
+        </td>
+      </tr>
+      <tr>
+        <td><div id="divGetRefNums"></div></td>
+        <td><div id="divGetMemFields"></div></td>
+      </tr>
+    </table>
+  </body>
+</html>
